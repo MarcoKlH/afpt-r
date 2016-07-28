@@ -1,0 +1,16 @@
+Package: afpt
+Title: Animal Flight Performance Tool
+Version: 0.2
+Date: 2016-06-01
+Authors@R: person("Marco",
+                "Klein Heerenbrink",
+                email = "Marco.Klein_Heerenbrink@biol.lu.se",
+                role = c("aut","cre"))
+Description: Collection of functions useful for estimating/modelling flight costs
+    in animal (vertebrate) flight. It features an implementation of the aerodynamic
+    power model described in Klein Heerenbrink et al. 2015 Proc.R.Soc.A 471: 20140952.
+Depends: R(>= 3.0.0)
+License: GPL (>= 3)
+Suggests: knitr,
+    rmarkdown
+VignetteBuilder: knitr
