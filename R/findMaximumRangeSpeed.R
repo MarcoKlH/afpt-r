@@ -29,7 +29,7 @@ findMaximumRangeSpeed <- function(bird,lower=NULL,upper=NULL,windSpeed=0,windDir
 
   groundSpeed <- function(speed) {
     groundSpeed <- air2ground(
-      speed, windSpeed = wind, windDir = beta, climbAngle = gamma
+      speed, windSpeed = wind, windDir = windDir, climbAngle = gamma
     )$groundSpeed
   }
 
@@ -38,7 +38,7 @@ findMaximumRangeSpeed <- function(bird,lower=NULL,upper=NULL,windSpeed=0,windDir
   }
 
   #optResult <- pracma::fminbnd(costOfTransport,lower,upper)
-  optResult <- optimize(costOfTransport,c(lower,upper),tol=0.01)
+  optResult <- stats::optimize(costOfTransport,c(lower,upper),tol=0.01)
   optResult$xmin <- optResult$minimum
 
   dist2lower <- (optResult$xmin - lower)/optResult$xmin

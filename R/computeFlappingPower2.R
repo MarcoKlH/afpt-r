@@ -28,7 +28,7 @@ if (class(strokeplane)[1]=='try-error') { # deal with try-error in case provided
   if (try(grepl('opt',strokeplane))) {
     strokeplane <- mapply(
       function(speed,frequency){
-        result <- optimize(function(x) computeFlappingPower2(bird,speed,...,frequency=frequency,strokeplane=x)$power,c(0,50),tol=0.1)
+        result <- stats::optimize(function(x) computeFlappingPower2(bird,speed,...,frequency=frequency,strokeplane=x)$power,c(0,50),tol=0.1)
         #if (result$xmin<1) result <- fminbnd(function(x) computeFlappingPower2(bird,speed,...,frequency,strokeplane=x)$power,-30,5)
         return(result$minimum)
       },speed=speed,frequency=frequency)

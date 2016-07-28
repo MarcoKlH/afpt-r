@@ -1,3 +1,5 @@
+importFrom("graphics","plot")
+
 export("amplitude")
 export("air2ground")
 export("altitude2density")

@@ -6,7 +6,7 @@
 This function performs a numerical optimization to find the airspeed for which \eqn{\frac{P}{U}}{P/U} is minimum. For this it uses the function \code{optimize}.
 }
 \usage{
-findMaximumRangeSpeed(bird, lower, upper, ...)
+findMaximumRangeSpeed(bird,lower=NULL,upper=NULL,windSpeed=0,windDir=0,...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{

@@ -50,7 +50,7 @@ findMaximumClimbRate <- function(bird,maximumPower,speed='opt',...) {
     #  0.9*speed,
     #  1.5*speed
     #)
-    optResult <- optimize(
+    optResult <- stats::optimize(
       function(speed)fun.speed(speed)$climbRate*-1,
       c(0.9*speed,1.5*speed),
       tol=0.01
@@ -79,7 +79,7 @@ findMaximumClimbRate <- function(bird,maximumPower,speed='opt',...) {
   #   upper
   # )
 
-  optResult <- uniroot(
+  optResult <- stats::uniroot(
     function(climbAngle)fun(climbAngle,speed)$power-maximumPower,
     c(lower,upper),
     tol = 0.01

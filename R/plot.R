@@ -1,5 +1,5 @@
 plot.powercurve.set <- function(x,...){
-  par(mar=c(3.1,3.1,0.4,3.1),mgp=c(1.9,.7,0),cex=0.75)
+  graphics::par(mar=c(3.1,3.1,0.4,3.1),mgp=c(1.9,.7,0),cex=0.75)
 
   mrP <- x$table["maximumRange",]
   maxP <- x$table["maximumSpeed",]
@@ -46,7 +46,7 @@ plot.powercurve.set <- function(x,...){
   })
 
 
-  par(new=TRUE)
+  graphics::par(new=TRUE)
 
   # plot power.chem
   with(x$powercurve , {
@@ -75,10 +75,10 @@ plot.powercurve.set <- function(x,...){
          xlim=c(0,maxV), ylim=c(0,maxP.chem)
     )
   })
-  axis(side=2)
-  axis(side=1)
-  axis(side=4,col='red3',col.axis='red3')
-  mtext(side = 1, line = 2,'Airspeed (m/s)')
-  mtext(side = 2, line = 2,'Aerodynamic power (W)')
-  mtext(side = 4, line = 2,'Chemical power (W)', col ='red3')
+  graphics::axis(side=2)
+  graphics::axis(side=1)
+  graphics::axis(side=4,col='red3',col.axis='red3')
+  graphics::mtext(side = 1, line = 2,'Airspeed (m/s)')
+  graphics::mtext(side = 2, line = 2,'Aerodynamic power (W)')
+  graphics::mtext(side = 4, line = 2,'Chemical power (W)', col ='red3')
 }

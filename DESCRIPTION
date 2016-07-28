@@ -10,7 +10,9 @@ Description: Collection of functions useful for estimating/modelling flight cost
     in animal (vertebrate) flight. It features an implementation of the aerodynamic
     power model described in Klein Heerenbrink et al. 2015 Proc.R.Soc.A 471: 20140952.
 Depends: R(>= 3.0.0)
-License: GPL (>= 3)
+Imports: graphics,
+    stats
 Suggests: knitr,
     rmarkdown
 VignetteBuilder: knitr
+License: GPL (>= 3)

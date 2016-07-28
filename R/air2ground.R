@@ -1,4 +1,6 @@
 air2ground <- function(airSpeed,windSpeed=0,windDir=0,climbAngle=0){
+  windDir <- windDir*pi/180
+
   U <- airSpeed*cos(climbAngle)
   WtoV <- windSpeed*sin(windDir)
   WtoV[abs(WtoV)>U] <- NA;

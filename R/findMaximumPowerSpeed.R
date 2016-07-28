@@ -25,7 +25,7 @@ findMaximumPowerSpeed <- function(bird,maximumPower,lower,upper,...) {
     if (P.lo$power<P.hi$power) return(P.lo) else return(P.hi)
   }
   #optResult <- pracma::brent(function(speed)fun(speed)$power-maximumPower,lower,upper)
-  optResult <- uniroot(function(speed)fun(speed)$power-maximumPower,c(lower,upper),tol=0.01)
+  optResult <- stats::uniroot(function(speed)fun(speed)$power-maximumPower,c(lower,upper),tol=0.01)
   return(fun(optResult$root))
 }
 
