@@ -1,7 +1,7 @@
 computeFlightPerformance <- function (bird,...,length.out=10) {
   opts <- list(...)
 
-  fc <- .setDefault(opts,'flightcondition',FLIGHTCONDITION)
+  fc <- .setDefault(opts,'flightcondition',ISA0)
 
   ## check if bird object contains required fields
   requiredNames <- c('wingSpan','wingArea','massTotal','bodyFrontalArea')

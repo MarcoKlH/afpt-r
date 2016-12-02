@@ -1,4 +1,4 @@
-FLIGHTCONDITION <- list(
+ISA0 <- list(
   pressure = 101325, # ISA0 pressure
   gasconstant = 287.053, # ISA0 gas constant
   temperature = 288.15, # ISA0 air temperature
@@ -27,7 +27,7 @@ FLAPPINGMODELCOEFFS <- list(
   )
 )
 
-devtools::use_data(FLIGHTCONDITION,FLAPPINGMODELCOEFFS,internal=TRUE,overwrite=TRUE)
+devtools::use_data(ISA0,FLAPPINGMODELCOEFFS,internal=TRUE,overwrite=TRUE)
 
 
 

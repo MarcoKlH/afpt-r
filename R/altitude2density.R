@@ -1,5 +1,5 @@
 altitude2density <- function(altitude=0) {
-  fc <- FLIGHTCONDITION
+  fc <- ISA0
   rho0 <- fc$density
   g0 <- fc$gravity
   R <- fc$gasconstant

@@ -98,7 +98,7 @@ if (class(strokeplane)[1]=='try-error') { # deal with try-error in case provided
   }
 
   ## flight condition
-  fc <- .setDefault(opts,'flightcondition',FLIGHTCONDITION)
+  fc <- .setDefault(opts,'flightcondition',ISA0)
   rho <- .setDefault(opts,'density',fc$density)
   g <- .setDefault(opts,'gravity',fc$gravity)
   nu <- .setDefault(opts,'viscosity',fc$viscosity)
