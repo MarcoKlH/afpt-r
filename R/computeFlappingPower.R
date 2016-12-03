@@ -116,25 +116,25 @@ if (class(strokeplane)[1]=='try-error') { # deal with try-error in case provided
   ## bird aerodynamic coefficients
   kp <- bird$coef.profileDragLiftFactor
   #CDb <- bird$coef.bodyDragCoefficient # dealt with above...
-  Re <- speed/nu*S/b
+  ReynoldsNo <- computeReynoldsNumber(speed,S/b)
 
-  CDf.lam <- function(Re) 2.66/sqrt(Re)
-  CDf.tur <- function(Re) 2*0.074/(Re)^(1/5)
+  CDf.lam <- function(ReynoldsNo) 2.66/sqrt(ReynoldsNo)
+  CDf.tur <- function(ReynoldsNo) 2*0.074/(ReynoldsNo)^(1/5)
   if (.hasField(opts,'CDpro0')) {
     if (length(opts$CDpro0)>0) { # fixed coefficient
       CDpro0 <- opts$CDpro0[1]
     }
     if (length(opts$CDpro0)>1) { # turbulent transition flat plate model
-      Re.tr <- opts$CDpro0[2]
+      ReynoldsNo.tr <- opts$CDpro0[2]
       CDpro0 <- CDpro0 +
-        (Re<Re.tr)*CDf.lam(Re) +
-        (Re>Re.tr)*(CDf.tur(Re) - (CDf.tur(Re.tr)-CDf.lam(Re.tr))*Re.tr/Re) # turbulent transition model
+        (ReynoldsNo<ReynoldsNo.tr)*CDf.lam(ReynoldsNo) +
+        (ReynoldsNo>ReynoldsNo.tr)*(CDf.tur(ReynoldsNo) - (CDf.tur(ReynoldsNo.tr)-CDf.lam(ReynoldsNo.tr))*ReynoldsNo.tr/ReynoldsNo) # turbulent transition model
     }
     if (length(opts$CDpro0)>2) { # multiplier
       CDpro0 <- CDpro0*opts$CDpro0[3]
     }
   } else {
-    CDpro0 <- CDf.lam(Re)
+    CDpro0 <- CDf.lam(ReynoldsNo)
   }
 
   # decompose weight into lift and drag components wrt climb angle
@@ -192,7 +192,7 @@ if (class(strokeplane)[1]=='try-error') { # deal with try-error in case provided
     kD = kD,
     kP = kP,
     CDpro0 = CDpro0,
-    ReynoldsNumber = Re,
+    ReynoldsNumber = ReynoldsNo,
     Dnf = data.frame(
       ind = Dnf.ind,
       pro0 = Dnf.pro0,
