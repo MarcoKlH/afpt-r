@@ -81,22 +81,6 @@ if (class(strokeplane)[1]=='try-error') { # deal with try-error in case provided
       },speed=speed,frequency=frequency)
   }
 
-  ## deal with optional argument for body drag coefficient
-  CDb <- bird$coef.bodyDragCoefficient # default
-  if (.hasField(opts,'bodyDragCoefficient')) {
-    CDb <- opts$bodyDragCoefficient
-    CDb <- switch(typeof(CDb),
-                        'double' = CDb, # if a numerical value provided, just take that.
-                        'closure' = try(CDb(speed),silent=TRUE), # if function provided, try if it works (otherwise deal with error later)
-                        bird$coef.bodyDragCoefficient # otherwise just fall back on bird body drag coefficient
-    )
-    if (class(CDb)[1]=='try-error') { # deal with try-error in case provided function doesn't work -> fall back on bird body drag coefficient
-      warning('Could not interpret specified function for body drag coefficient. Resorting to default for bird.')
-      CDb <- bird$coef.bodyDragCoefficient
-    }
-    CDb <- (CDb<0)*bird$coef.bodyDragCoefficient + (CDb>0)*CDb # ensure positive body drag coefficient
-  }
-
   ## flight condition
   fc <- .setDefault(opts,'flightcondition',ISA0)
   rho <- .setDefault(opts,'density',fc$density)
@@ -110,48 +94,21 @@ if (class(strokeplane)[1]=='try-error') { # deal with try-error in case provided
   Sb <- bird$bodyFrontalArea
   phi <- if(!missing(strokeplane)) strokeplane*pi/180 else 0 # assume phi comes in degrees
 
-  # reduced frequency
+  ## reduced frequency
   kf <- reducedFrequency(b,frequency,speed)
+  ReynoldsNo <- computeReynoldsNumber(speed,S/b,nu)
 
-  ## bird aerodynamic coefficients
-  kp <- bird$coef.profileDragLiftFactor
-  #CDb <- bird$coef.bodyDragCoefficient # dealt with above...
-  ReynoldsNo <- computeReynoldsNumber(speed,S/b)
-
-  CDf.lam <- function(ReynoldsNo) 2.66/sqrt(ReynoldsNo)
-  CDf.tur <- function(ReynoldsNo) 2*0.074/(ReynoldsNo)^(1/5)
-  if (.hasField(opts,'CDpro0')) {
-    if (length(opts$CDpro0)>0) { # fixed coefficient
-      CDpro0 <- opts$CDpro0[1]
-    }
-    if (length(opts$CDpro0)>1) { # turbulent transition flat plate model
-      ReynoldsNo.tr <- opts$CDpro0[2]
-      CDpro0 <- CDpro0 +
-        (ReynoldsNo<ReynoldsNo.tr)*CDf.lam(ReynoldsNo) +
-        (ReynoldsNo>ReynoldsNo.tr)*(CDf.tur(ReynoldsNo) - (CDf.tur(ReynoldsNo.tr)-CDf.lam(ReynoldsNo.tr))*ReynoldsNo.tr/ReynoldsNo) # turbulent transition model
-    }
-    if (length(opts$CDpro0)>2) { # multiplier
-      CDpro0 <- CDpro0*opts$CDpro0[3]
-    }
-  } else {
-    CDpro0 <- CDf.lam(ReynoldsNo)
-  }
-
-  # decompose weight into lift and drag components wrt climb angle
+  ## decompose weight into lift and drag components wrt climb angle
   climbAngle <- .setDefault(opts,'climbAngle',0)*pi/180
   L.climb <- m*g*cos(climbAngle)
   D.climb <- m*g*sin(climbAngle)
 
-    # Forces
+  ## Forces
   L <- .setDefault(opts,'lift',L.climb)
-  Dnf.ind  <- L^2/(1/2*rho*pi*b^2)/speed^2
-  Dnf.pro0 <- 1/2*rho*S*CDpro0*speed^2
-  Dnf.pro2 <- L^2/(1/2*rho*S)*kp/speed^2
-  D.body <- 1/2*rho*Sb*CDb*speed^2
-  D.add <- .setDefault(opts,'addedDrag',D.climb)
+  Dnf <- dragForces(bird,speed,L,fc,opts)
 
   # Thrust ratio
-  ToverL <- (Dnf.ind + Dnf.pro0 + Dnf.pro2 + D.body + D.add)/(L - fD.ind(kf,phi)*Dnf.ind - fD.pro0(kf,phi)*Dnf.pro0 - fD.pro2(kf,phi)*Dnf.pro2)
+  ToverL <- (Dnf$ind + Dnf$pro0 + Dnf$pro2 + Dnf$par)/(L - fD.ind(kf,phi)*Dnf$ind - fD.pro0(kf,phi)*Dnf$pro0 - fD.pro2(kf,phi)*Dnf$pro2)
 
   kD <- data.frame(
     ind = (1 + fD.ind(kf,phi)*ToverL),
@@ -164,11 +121,10 @@ if (class(strokeplane)[1]=='try-error') { # deal with try-error in case provided
     pro2 = (1 + fP.pro2(kf,phi)*ToverL)
   )
 
-  power.ind <- kP$ind*Dnf.ind*speed
-  power.pro0 <- kP$pro0*Dnf.pro0*speed
-  power.pro2 <- kP$pro2*Dnf.pro2*speed
-  power.body <- D.body*speed
-  power.add <- D.add*speed
+  power.ind <- kP$ind*Dnf$ind*speed
+  power.pro0 <- kP$pro0*Dnf$pro0*speed
+  power.pro2 <- kP$pro2*Dnf$pro2*speed
+  power.par <- Dnf$par*speed
 
   # induced velocity in hover (for forward flight check)
   vih <- sqrt(L/(1/2*rho*pi*b^2))
@@ -184,21 +140,16 @@ if (class(strokeplane)[1]=='try-error') { # deal with try-error in case provided
   output <- data.frame(
     bird.name = bird$name,
     speed = speed,
-    power = power.ind + power.pro0 + power.pro2 + power.body + power.add,
+    power = power.ind + power.pro0 + power.pro2 + power.par,
     strokeplane = strokeplane,
     amplitude = amplitude(kf,phi,ToverL),
     frequency = frequency,
     flags = flags,
     kD = kD,
     kP = kP,
-    CDpro0 = CDpro0,
+    CDpro0 = Dnf$pro0/(1/2*fc$density*speed^2*S),
     ReynoldsNumber = ReynoldsNo,
-    Dnf = data.frame(
-      ind = Dnf.ind,
-      pro0 = Dnf.pro0,
-      pro2 = Dnf.pro2,
-      par = D.body+D.add
-    ),
+    Dnf = Dnf,
     L = L
   )
   class(output) <- append(class(output),'power.mechanical')
