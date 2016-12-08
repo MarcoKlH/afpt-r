@@ -106,6 +106,7 @@ if (class(strokeplane)[1]=='try-error') { # deal with try-error in case provided
   ## Forces
   L <- .setDefault(opts,'lift',L.climb)
   Dnf <- dragForces(bird,speed,L,fc,opts)
+  Dnf$par <- Dnf$par+D.climb
 
   # Thrust ratio
   ToverL <- (Dnf$ind + Dnf$pro0 + Dnf$pro2 + Dnf$par)/(L - fD.ind(kf,phi)*Dnf$ind - fD.pro0(kf,phi)*Dnf$pro0 - fD.pro2(kf,phi)*Dnf$pro2)
