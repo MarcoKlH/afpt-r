@@ -74,8 +74,6 @@ if (class(strokeplane)[1]=='try-error') { # deal with try-error in case provided
   if (try(grepl('opt',strokeplane))) {
     strokeplane <- mapply(
       function(speed,frequency){
-        #result <- pracma::fminbnd(function(x) computeFlappingPower(bird,speed,...,frequency=frequency,strokeplane=x)$power,0,50)
-        # return(result$xmin)
         result <- stats::optimize(function(x) computeFlappingPower(bird,speed,...,frequency=frequency,strokeplane=x)$power,c(0,50),tol=0.1)
         return(result$minimum)
       },speed=speed,frequency=frequency)

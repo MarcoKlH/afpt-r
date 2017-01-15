@@ -14,7 +14,6 @@ findMinimumPowerSpeed <- function(bird,lower=NULL,upper=NULL,...) {
 .findMinimumPowerSpeed.function <- function(bird,lower,upper,...) {
   fun <- match.fun(bird)
 
-  #optResult <- pracma::fminbnd(function(speed)fun(speed)$power,lower,upper)
   optResult <- stats::optimize(function(speed)fun(speed)$power,c(lower,upper),tol=0.01)
   optResult$xmin <- optResult$minimum
 

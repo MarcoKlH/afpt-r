@@ -51,11 +51,7 @@ findMaximumClimbRate <- function(bird,maximumPower,speed='opt',...) {
     speed <- findMinimumPowerSpeed(function(speed)fun(0,speed),strokeplane=0,lower=4,upper=20)$speed
 
     fun.speed <- function(speed).findMaximumClimbRate.function(fun,maximumPower,speed,...)
-    #optResult <- pracma::fminbnd(
-    #  function(speed)fun.speed(speed)$climbRate*-1,
-    #  0.9*speed,
-    #  1.5*speed
-    #)
+
     optResult <- stats::optimize(
       function(speed)fun.speed(speed)$climbRate*-1,
       c(0.9*speed,1.5*speed),
@@ -78,12 +74,6 @@ findMaximumClimbRate <- function(bird,maximumPower,speed='opt',...) {
   } else if (P.lo$power>maximumPower) {
     warning('Too little power for vertical descent??? Check input arguments')
   }
-
-  # optResult <- pracma::brent(
-  #   function(climbAngle)fun(climbAngle,speed)$power-maximumPower,
-  #   lower,
-  #   upper
-  # )
 
   optResult <- stats::uniroot(
     function(climbAngle)fun(climbAngle,speed)$power-maximumPower,
