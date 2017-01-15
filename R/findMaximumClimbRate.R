@@ -1,6 +1,12 @@
 findMaximumClimbRate <- function(bird,maximumPower,speed='opt',...) {
   if(any(class(bird)=='function')) return(.findMaximumClimbRate.function(bird,maximumPower,speed,...))
-  if(any(class(bird)=='bird')) return(.findMaximumClimbRate.multiBird(bird,maximumPower,speed,...))
+  if(any(class(bird)=='bird')) {
+      if(missing(maximumPower)){
+          message('findMaximumClimbRate(): argument "maximumPower" is missing; a default value will be computed from "bird"')
+          maximumPower<- computeAvailablePower(bird)
+      }
+      return(.findMaximumClimbRate.multiBird(bird,maximumPower,speed,...))
+  }
   # otherwise:
   warning('Wrong class for bird input! trying to cast to bird object...')
   return(try(findMaximumClimbRate(Bird(bird),maximumPower,speed,...),silent=TRUE))
