@@ -1,4 +1,7 @@
 plot.powercurve.set <- function(x,...){
+  opts <- list(...)
+  symbol.speed <- .setDefault(opts,"symbol.speed","V")
+
   graphics::par(mar=c(3.1,3.1,0.4,3.1),mgp=c(1.9,.7,0),cex=0.75)
 
   mrP <- x$table["maximumRange",]
@@ -9,6 +12,8 @@ plot.powercurve.set <- function(x,...){
   minP <- x$table["minimumPower",]
   dyText.aero <- 0.07 * (maxP.aero - 0*minP$power.aero)
   dyText.chem <- 0.07 * (maxP.chem - 0*minP$power.chem)
+
+  Vsub <- function(sub)paste0(symbol.speed,sub)
 
   # work around annotation interference
   if (maxP$power.aero/minP$power.aero<1.4) maxP.aero <- maxP.aero + minP$power.aero
@@ -30,11 +35,11 @@ plot.powercurve.set <- function(x,...){
   # mark Vmin and Vmax
   with(x$table["minimumSpeed",],{
     lines(speed*c(1,1),c(-1.1,1.1)*maxP.aero,lty=2,col="grey60")
-    text(0.7*speed,0.55*maxP.aero,"Vmin",col="grey50",srt=90)
+    text(0.7*speed,0.55*maxP.aero,Vsub("min"),col="grey50",srt=90)
   })
   with(x$table["maximumSpeed",],{
     lines(speed*c(1,1),c(-1.1,1.1)*maxP.aero,lty=2,col="grey60")
-    text(1.05*speed,0.55*maxP.aero,"Vmax",col="grey50",srt=90)
+    text(1.05*speed,0.55*maxP.aero,Vsub("max"),col="grey50",srt=90)
   })
 
   # mark Vclimb
@@ -42,7 +47,7 @@ plot.powercurve.set <- function(x,...){
     lines(c(0,maxV),power.aero*c(1,1),lty=3)
     text(0.06*maxV,power.aero+dyText.aero,'Pmax')
     points(speed,power.aero,pch=17)
-    text(speed,power.aero+dyText.aero,paste0("Vclimb (",round(climbRate,2),"m/s)"))
+    text(speed,power.aero+dyText.aero,paste0(Vsub("mc")," (",round(climbRate,2),"m/s)"))
   })
 
 
@@ -70,7 +75,7 @@ plot.powercurve.set <- function(x,...){
   # mark Vmp and Vmr
   with(x$table[c("minimumPower","maximumRange"),],{
     points(speed,power.chem,col='red3',pch=17)
-    text(speed,power.chem+dyText.chem,c("Vmp","Vmr"),
+    text(speed,power.chem+dyText.chem,c(Vsub("mp"),Vsub("mr")),
          col='red3',
          xlim=c(0,maxV), ylim=c(0,maxP.chem)
     )

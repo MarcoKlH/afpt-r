@@ -65,7 +65,7 @@ Finally, the `computeFlightPerformance()` also returns a powercurve for a range 
 
 ```{r, fig.show='hold', fig.width=3.45, fig.cap="**Powercurves** -- aerodynamic power in black; chemical power in red. **Peak amplitude** -- optimal flapping amplitude corresponding to powercurve "}
 powercurve <- flightperf$powercurve
-plot(flightperf)
+plot(flightperf,symbol.speed="U")
 
 plot(powercurve$speed,powercurve$amplitude,xlab=NA,ylab=NA,type='b',xlim=c(0,20),ylim=c(20,60))
 mtext(side = 1, line = 2, 'Airspeed (m/s)')
