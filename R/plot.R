@@ -50,6 +50,9 @@ plot.powercurve.set <- function(x,...){
     text(speed,power.aero+dyText.aero,paste0(Vsub("mc")," (",round(climbRate,2),"m/s)"))
   })
 
+  # y-axis left
+  graphics::axis(side=2)
+  graphics::mtext(side = 2, line = 2,'Aerodynamic power (W)')
 
   graphics::par(new=TRUE)
 
@@ -80,10 +83,11 @@ plot.powercurve.set <- function(x,...){
          xlim=c(0,maxV), ylim=c(0,maxP.chem)
     )
   })
-  graphics::axis(side=2)
-  graphics::axis(side=1)
+  # y-axis right:
   graphics::axis(side=4,col='red3',col.axis='red3')
-  graphics::mtext(side = 1, line = 2,'Airspeed (m/s)')
-  graphics::mtext(side = 2, line = 2,'Aerodynamic power (W)')
   graphics::mtext(side = 4, line = 2,'Chemical power (W)', col ='red3')
+
+  # x-axis
+  graphics::axis(side=1)
+  graphics::mtext(side = 1, line = 2,'Airspeed (m/s)')
 }
