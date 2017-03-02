@@ -12,7 +12,7 @@ dragForces <- function(bird,speed,lift=NULL,fc=ISA0,opts){
     ## bird aerodynamic coefficients
     kp <- bird$coef.profileDragLiftFactor
     CDpro0 <- dragCoefs.ProfileDrag0(ReynoldsNo,opts)
-    CDb <- dragCoefs.BodyDrag(bird,opts)
+    CDb <- dragCoefs.BodyDrag(bird,speed,opts)
 
 
     dragOut <- data.frame(
@@ -49,7 +49,7 @@ dragCoefs.ProfileDrag2 <- function(liftcoef,k=0.03){
     k*liftcoef^2
 }
 
-dragCoefs.BodyDrag <- function(bird,opts){
+dragCoefs.BodyDrag <- function(bird,speed,opts){
     CDb <- bird$coef.bodyDragCoefficient # default
     if (.hasField(opts,'bodyDragCoefficient')) {
         CDb <- opts$bodyDragCoefficient
