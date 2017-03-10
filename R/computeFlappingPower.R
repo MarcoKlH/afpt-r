@@ -1,90 +1,20 @@
-computeFlappingPower <- function(bird,speed,...,frequency,strokeplane = 'opt') {
+computeFlappingPower <- function(bird,speed,...,frequency = bird$wingbeatFrequency,strokeplane = 'opt') {
     opts <- list(...)
 
+    checkedArguments <- .computeFlappingPower.interpretArguments(bird,speed,opts,frequency,strokeplane)
 
-    ## handle multiple birds (only split rows if necessary)
-    nBirds <- nrow(bird)
-    nSpeeds <- length(speed)
-    optStrokeplane <- grepl('opt',strokeplane)
-    expSpeeds <- nSpeeds>1 & nSpeeds!=nBirds
-    splitRows <- nBirds>1 & ( optStrokeplane | expSpeeds )
-    if ( expSpeeds ) speed <- rep(speed,nBirds) # epxand speeds
-    if ( splitRows ) {
-        if (expSpeeds) {
-            iSpeed <- function(iBird)speed
-        } else {
-            iSpeed <- function(iBird)speed[iBird]
-        }
-
-        if (missing(frequency))iFun <- function(iBird){
-            computeFlappingPower(
-                bird[iBird,],
-                iSpeed(iBird),
-                ...,
-                strokeplane=strokeplane
-            )
-        }
-        else {
-            if ( length(frequency)!=nBirds ) {
-                iFun <- function(iBird)computeFlappingPower(
-                    bird[iBird,],
-                    iSpeed(iBird),
-                    ...,
-                    frequency=frequency[1], # take only first frequency
-                    strokeplane = strokeplane
-                )
-            } else {
-                iFun <- function(iBird)computeFlappingPower(
-                    bird[iBird,],
-                    iSpeed(iBird),
-                    ...,
-                    frequency=frequency[iBird], # take matching entry
-                    strokeplane = strokeplane
-                )
-            }
-        }
-    }
-    if ( splitRows ) {
-        for (iBird in seq_len(nBirds)) {
-            if (iBird==1) powerOut <- iFun(iBird)
-            else powerOut <- rbind(powerOut,iFun(iBird))
-        }
-        return(powerOut)
-    }
-
-
-    ## deal with wingbeat frequency
-    if (missing(frequency)) frequency = bird$wingbeatFrequency
-    frequency <- switch(typeof(frequency),
-                        'double'=frequency, # if a numerical value provided, just take that.
-                        'closure'=try(frequency(speed),silent=TRUE), # if function provided, try if it works (otherwise deal with error later)
-                        bird$wingbeatFrequency # otherwise just fall back on bird reference frequency
+    output<- with(checkedArguments,
+         if (try(grepl('opt',strokeplane))) {
+             .computeFlappingPower.optimizeStrokeplane(bird,speed,opts,frequency)
+         } else {
+             .computeFlappingPower.base(bird,speed,opts,frequency,strokeplane)
+         }
     )
-    if (class(frequency)[1]=='try-error') { # deal with try-error in case provided function doesn't work -> fall back on bird reference frequency
-        warning('Could not interpret specified function for wingbeat frequency. Resorting to default bird wingbeat frequency.')
-        frequency <- bird$wingbeatFrequency
-    }
-    frequency <- (frequency<0)*bird$wingbeatFrequency + (frequency>0)*frequency # ensure positive frequency
 
-    ## deal with strokeplane angle
-    strokeplane <- switch(typeof(strokeplane),
-                          'closure'=try(strokeplane(speed),silent=TRUE), # if function provided, try if it works (otherwise deal with error later)
-                          strokeplane # otherwise just use strokeplane
-    )
-    if (class(strokeplane)[1]=='try-error') { # deal with try-error in case provided function doesn't work -> fall back on strokeplane optimisation
-        warning('Could not interpret specified function for strokeplane angle. Defaulting to optimize strokeplane angle instead.')
-        strokeplane <- 'opt'
-    }
+    return(output)
+}
 
-    ## Strokeplane optimisation (could try to make this more integrated if it takes too much resources... but seems to work for now)
-    if (try(grepl('opt',strokeplane))) {
-        strokeplane <- mapply(
-            function(speed,frequency){
-                result <- stats::optimize(function(x) computeFlappingPower(bird,speed,...,frequency=frequency,strokeplane=x)$power,c(0,50),tol=0.1)
-                return(result$minimum)
-            },speed=speed,frequency=frequency)
-    }
-
+.computeFlappingPower.base <- function(bird,speed,opts,frequency,strokeplane) {
     ## flight condition
     fc <- .setDefault(opts,'flightcondition',ISA0)
     rho <- .setDefault(opts,'density',fc$density)
@@ -96,7 +26,7 @@ computeFlappingPower <- function(bird,speed,...,frequency,strokeplane = 'opt') {
     b <- bird$wingSpan
     S <- bird$wingArea
     Sb <- bird$bodyFrontalArea
-    phi <- if(!missing(strokeplane)) strokeplane*pi/180 else 0 # assume phi comes in degrees
+    phi <- strokeplane*pi/180 # assume phi comes in degrees
 
     ## reduced frequency
     kf <- reducedFrequency(b,frequency,speed)
@@ -162,3 +92,70 @@ computeFlappingPower <- function(bird,speed,...,frequency,strokeplane = 'opt') {
     return(output)
 }
 
+
+.computeFlappingPower.optimizeStrokeplane <- function(bird,speed,opts,frequency){
+    # strokeplane <- mapply(
+    #     function(speed,frequency){
+    #         result <- stats::optimize(function(x) .computeFlappingPower.base(bird,speed,opts,frequency=frequency,strokeplane=x)$power,c(0,50),tol=0.1)
+    #         return(result$minimum)
+    #     },speed=speed,frequency=frequency)
+    strokeplane <- 0*speed
+    optimizeStrokeplane <- function(bird,speed,opts,frequency) {
+        result <- stats::optimize(
+            function(x) .computeFlappingPower.base(bird,speed,opts,frequency,x)$power,
+            c(0,50),
+            tol=0.1)
+        return(result$minimum)
+    }
+    for (i in seq_len(length(speed))) {
+        strokeplane[i] <- optimizeStrokeplane(bird[i,],speed[i],opts,frequency[i])
+    }
+    return(.computeFlappingPower.base(bird,speed,opts,frequency,strokeplane))
+}
+
+
+.computeFlappingPower.interpretArguments <- function(bird,speed,opts,frequency,strokeplane) {
+    ## handle multiple birds (only split rows if necessary)
+    nBirds <- nrow(bird)
+    nSpeeds <- length(speed)
+    if (nSpeeds == nBirds) { # simple row splitting
+        useBird <- bird
+        useSpeed <- speed
+    } else { # first
+        useBird <- bird[rep(seq_len(nBirds),each=nSpeeds),]
+        useSpeed <- rep(speed,times=nBirds)
+    }
+
+    ## deal with wingbeat frequency
+    frequency <- switch(typeof(frequency),
+                        'double'=frequency, # if a numerical value provided, just take that.
+                        'closure'=try(frequency(speed),silent=TRUE), # if function provided, try if it works (otherwise deal with error later)
+                        bird$wingbeatFrequency # otherwise just fall back on bird reference frequency
+    )
+    if (class(frequency)[1]=='try-error') { # deal with try-error in case provided function doesn't work -> fall back on bird reference frequency
+        warning('Could not interpret specified function for wingbeat frequency. Resorting to default bird wingbeat frequency.')
+        frequency <- bird$wingbeatFrequency
+    }
+    frequency <- (frequency<0)*bird$wingbeatFrequency + (frequency>0)*frequency # ensure positive frequency
+    if (length(frequency)==1) frequency <- rep(frequency,length(useSpeed))
+    if (length(frequency)==nSpeeds & nSpeeds!=nBirds) frequency <- rep(frequency,nBirds)
+
+
+    # Deal with strokeplane
+    strokeplane <- switch(typeof(strokeplane),
+                          'closure'=try(strokeplane(speed),silent=TRUE), # if function provided, try if it works (otherwise deal with error later)
+                          strokeplane # otherwise just use strokeplane
+    )
+    if (class(strokeplane)[1]=='try-error') { # deal with try-error in case provided function doesn't work -> fall back on strokeplane optimisation
+        warning('Could not interpret specified function for strokeplane angle. Defaulting to optimize strokeplane angle instead.')
+        strokeplane <- 'opt'
+    }
+
+
+    checkedArguments <- list(
+        'bird' = useBird,
+        'speed' = useSpeed,
+        'frequency' = frequency,
+        'strokeplane' = strokeplane
+    )
+}
