@@ -31,3 +31,11 @@ test_that("speed dependent closure object returns drag coefficient correctly for
 #     CD.par <- power.aero$Dnf.par/q/myBird$bodyFrontalArea
 #     expect_equal(CD.par,bodyDragCoef.multi)
 # })
+
+
+test_that("computeFlightPerformance works with custom drag coefficient of closure type", {
+    bodyDragCoef.closure <- function(flightSpeed){0.1 + 1/flightSpeed}
+    flightperf <- computeFlightPerformance(bird = myBird, bodyDragCoefficient = bodyDragCoef.closure, length.out = 0)
+    CD.par <- with(flightperf$table,Dnf.par/(1/2*1.225*speed^2)/flightperf$bird$bodyFrontalArea)
+    expect_equal(CD.par,bodyDragCoef.closure(flightperf$table$speed))
+})
