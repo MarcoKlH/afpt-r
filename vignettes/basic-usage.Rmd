@@ -59,7 +59,7 @@ This is the simplest call to `computeFlightPerformance()`. The `print()` of the 
 
 These characteristic speeds are stored as a `data.frame` named `table`, which contains several more advanced variables not shown in the `print`, as explained in the following sections.
 
-The function `computeFlightPerformance()` also estimates the best climb performance. It is assumed that the optimal airspeed for climb is the minimum power speed, as this gives the largest power margin. This power margin is then used to compute the maximum climb rate. This data point is stored in the `data.frame` named `maxClimb`. It contains the same variables as `table`, plus an additional one: `climbRate`.
+The function `computeFlightPerformance()` also estimates the best climb performance, i.e. the maximum climb rate that can be achieved given the power available from the muscles. This data point is stored in the `data.frame` named `maxClimb`. It contains the same variables as `table`, plus an additional one: `climbRate`.
 
 Finally, the `computeFlightPerformance()` also returns a powercurve for a range of speeds. The length of this curve can be specified by providing a `length.out` argument, but the default produces 10 points. This curve can be used to visualize the speed dependency of the various variables.
 
@@ -105,6 +105,7 @@ with(powercurve , lines( speed, Dnf.par, type='b', col='yellow3'))
 mtext(side = 1, line = 2,'Airspeed (m/s)')
 mtext(side = 2, line = 2,'Drag (N)')
 ```
+
 The above figure shows the magnitude of the non-flapping drag components for different speeds. The lift dependent components are very large at low speeds and they decrease rapidly with increasing speed. The parasitic drag shows the classic quadratic behaviour with speed. The zero-lift profile drag is near zero at low speeds, and increases more linearly with speed. This is due to the strong dependence of the friction coefficient on the Reynolds number.
 
 ### Drag factors and power factors
@@ -117,7 +118,7 @@ These factors are for induced drag, zero lift profile drag and lift dependent pr
 The aerodynamic power components for flapping flight can be computed in a similar way: $P = k_P D^\prime U$.
 The factors $k_P$ depend on the wingbeat kinematics and are also stored in `table`:
 ```{r}
-flightperf$table[,grep('^kD.',names(flightperf$table))]
+flightperf$table[,grep('^kP.',names(flightperf$table))]
 ```
 ```{r, fig.show='hold', fig.width=3.45, fig.cap="**Drag factors** -- Red: induced drag; green: zero-lift profile drag; blue: lift-dep. profile drag; there is no factor for parasitic drag, because this component is assumed independent of wingbeat kinematics. **Power factors** -- same legend."}
 par(mar=c(3.1,3.1,0.4,1.1),mgp=c(1.9,.7,0),cex=0.75)
