@@ -1,20 +1,21 @@
 computeFlappingPower <- function(bird,speed,...,frequency = bird$wingbeatFrequency,strokeplane = 'opt') {
     opts <- list(...)
+    climbAngle <- .setDefault(opts,'climbAngle',0)
 
-    checkedArguments <- .computeFlappingPower.interpretArguments(bird,speed,opts,frequency,strokeplane)
+    checkedArguments <- .computeFlappingPower.interpretArguments(bird,speed,opts,frequency,strokeplane,climbAngle)
 
     output<- with(checkedArguments,
          if (try(grepl('opt',strokeplane))) {
-             .computeFlappingPower.optimizeStrokeplane(bird,speed,opts,frequency)
+             .computeFlappingPower.optimizeStrokeplane(bird,speed,opts,frequency,climbAngle)
          } else {
-             .computeFlappingPower.base(bird,speed,opts,frequency,strokeplane)
+             .computeFlappingPower.base(bird,speed,opts,frequency,strokeplane,climbAngle)
          }
     )
 
     return(output)
 }
 
-.computeFlappingPower.base <- function(bird,speed,opts,frequency,strokeplane) {
+.computeFlappingPower.base <- function(bird,speed,opts,frequency,strokeplane,climbAngle) {
     ## flight condition
     fc <- .setDefault(opts,'flightcondition',ISA0)
     rho <- .setDefault(opts,'density',fc$density)
@@ -33,7 +34,7 @@ computeFlappingPower <- function(bird,speed,...,frequency = bird$wingbeatFrequen
     ReynoldsNo <- computeReynoldsNumber(speed,S/b,nu)
 
     ## decompose weight into lift and drag components wrt climb angle
-    climbAngle <- .setDefault(opts,'climbAngle',0)*pi/180
+    climbAngle <- climbAngle*pi/180
     L.climb <- m*g*cos(climbAngle)
     D.climb <- m*g*sin(climbAngle)
 
@@ -93,28 +94,28 @@ computeFlappingPower <- function(bird,speed,...,frequency = bird$wingbeatFrequen
 }
 
 
-.computeFlappingPower.optimizeStrokeplane <- function(bird,speed,opts,frequency){
+.computeFlappingPower.optimizeStrokeplane <- function(bird,speed,opts,frequency,climbAngle){
     # strokeplane <- mapply(
     #     function(speed,frequency){
     #         result <- stats::optimize(function(x) .computeFlappingPower.base(bird,speed,opts,frequency=frequency,strokeplane=x)$power,c(0,50),tol=0.1)
     #         return(result$minimum)
     #     },speed=speed,frequency=frequency)
     strokeplane <- 0*speed
-    optimizeStrokeplane <- function(bird,speed,opts,frequency) {
+    optimizeStrokeplane <- function(bird,speed,opts,frequency,climbAngle) {
         result <- stats::optimize(
-            function(x) .computeFlappingPower.base(bird,speed,opts,frequency,x)$power,
+            function(x) .computeFlappingPower.base(bird,speed,opts,frequency,x,climbAngle)$power,
             c(0,50),
             tol=0.1)
         return(result$minimum)
     }
     for (i in seq_len(length(speed))) {
-        strokeplane[i] <- optimizeStrokeplane(bird[i,],speed[i],opts,frequency[i])
+        strokeplane[i] <- optimizeStrokeplane(bird[i,],speed[i],opts,frequency[i],climbAngle[i])
     }
-    return(.computeFlappingPower.base(bird,speed,opts,frequency,strokeplane))
+    return(.computeFlappingPower.base(bird,speed,opts,frequency,strokeplane,climbAngle))
 }
 
 
-.computeFlappingPower.interpretArguments <- function(bird,speed,opts,frequency,strokeplane) {
+.computeFlappingPower.interpretArguments <- function(bird,speed,opts,frequency,strokeplane,climbAngle) {
     ## handle multiple birds (only split rows if necessary)
     nBirds <- nrow(bird)
     nSpeeds <- length(speed)
@@ -151,11 +152,17 @@ computeFlappingPower <- function(bird,speed,...,frequency = bird$wingbeatFrequen
         strokeplane <- 'opt'
     }
 
+    # Deal with climbAngle
+    if (length(climbAngle)==1) climbAngle <- rep(climbAngle,length(useSpeed))
+    if (length(climbAngle)==nSpeeds & nSpeeds!=nBirds) climbAngle <- rep(climbAngle,nBirds)
+
+
 
     checkedArguments <- list(
         'bird' = useBird,
         'speed' = useSpeed,
         'frequency' = frequency,
-        'strokeplane' = strokeplane
+        'strokeplane' = strokeplane,
+        'climbAngle' = climbAngle
     )
 }
