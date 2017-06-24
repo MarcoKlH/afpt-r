@@ -43,6 +43,7 @@ dragCoefs.ProfileDrag0 <- function(ReynoldsNo,opts){
     } else {
         CDpro0 <- calcCDf.lam(ReynoldsNo)
     }
+    return(CDpro0)
 }
 
 dragCoefs.ProfileDrag2 <- function(liftcoef,k=0.03){
