@@ -86,7 +86,7 @@ mtext(side = 2, line = 2,'Drag components (N)')
 
 ### Zero lift profile drag
 In this model we assume the zero lift profile drag is caused by the friction of a laminar boundary layer over the aerofoil. Specifically the model uses
-$$ C_{D_\mathrm{pro,0}} = \frac{2.66}{Re_c}, $$
+$$ C_{D_\mathrm{pro,0}} = \frac{2.66}{sqrt{Re_c}}, $$
 where $Re_c$ is the Reynolds number for the mean chord length $c$ at air speed $U$ with kinematic viscosity $\nu$:
 $$ Re_c = \frac{U c}{\nu}.$$
 This is the solution for a flat plate laminar boundary layer in a paralel flow. At large Reynolds numbers, the laminar boundary layer may transition to a turbulent boundary layer somewhere along the aerofoil  [@Anderson2007], however, this typically occurs at higher Reynolds numbers than those experienced by birds. 
