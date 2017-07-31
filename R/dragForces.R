@@ -5,7 +5,7 @@ dragForces <- function(bird,speed,lift=NULL,fc=ISA0,opts){
     S <- bird$wingArea
     Sb <- bird$bodyFrontalArea
 
-    q = 1/2*ISA0$density*speed^2 # dynamic pressure
+    q = 1/2*fc$density*speed^2 # dynamic pressure
 
     ReynoldsNo <- computeReynoldsNumber(speed,S/b,fc$viscosity)
 
