@@ -52,16 +52,18 @@ flightperf
 ```
 This is the simplest call to `computeFlightPerformance()`. The `print()` of the `flightperf` shows a summary of the computed powercurve. The function `computeFlightPerformance()` has calculated several characteristic airspeeds:
 
-- `minimumSpeed`: the required aerodynamic power equals the maximum available muscle power.
+- `minimumSpeed`: the required aerodynamic power equals the maximum available muscle power[^1].
 - `minimumPower`: the required aerodynamic/chemical power is minimal, i.e. this is the speed for maximum endurance.
 - `maximumRange`: the cost of transport is minimal, i.e this is the speed for maximum range.
 - `maximumSpeed`: required aerodynamic power equals the maximum available muscle power.
+
+[^1]: At the minimum speed, the assumption of fast forward flight may be invalid. See also the section about validity flags.
 
 These characteristic speeds are stored as a `data.frame` named `table`, which contains several more advanced variables not shown in the `print`, as explained in the following sections.
 
 The function `computeFlightPerformance()` also estimates the best climb performance, i.e. the maximum climb rate that can be achieved given the power available from the muscles. This data point is stored in the `data.frame` named `maxClimb`. It contains the same variables as `table`, plus an additional one: `climbRate`.
 
-Finally, the `computeFlightPerformance()` also returns a powercurve for a range of speeds. The length of this curve can be specified by providing a `length.out` argument, but the default produces 10 points. This curve can be used to visualize the speed dependency of the various variables.
+Finally, `computeFlightPerformance()` also computes a powercurve for a range of speeds. The length of this curve can be specified by providing a `length.out` argument, but the default produces 10 points. This curve can be used to visualize the speed dependency of the various variables.
 
 ```{r, fig.show='hold', fig.width=3.45, fig.cap="**Powercurves** -- aerodynamic power in black; chemical power in red. **Peak amplitude** -- optimal flapping amplitude corresponding to powercurve "}
 powercurve <- flightperf$powercurve
@@ -86,7 +88,9 @@ By default, `computeFlightPerformance()` will try to optimize the strokeplane an
 ```{r}
 flightperf$table[,grep('^flags.',names(flightperf$table))]
 ```
-In this case the flags indicate the the minimum speed is outside the model's validity range, indicating too high reduced frequency and too high thrust requirement. The model was obtained for reduced frequencies $1 \leq k_f \leq 6$ and thrust requirements (thrust to lift ratio) $0 \leq \frac{T}{L} \leq 0.3$. The flag `flags.speedLo` indicates the model's that the data point is below the low speed limit of the model ($U<2w_\mathrm{i,h}$; airspeed is lower than twice the induced downwash in hover). Data points with flags may be reasonable extrapolations of the model, but it is probably safer to assume flagged data points are invalid.
+In this case the flags indicate the the minimum speed is outside the model's validity range, indicating too high reduced frequency and too high thrust requirement. The model was obtained for reduced frequencies $1 \leq k_f \leq 6$ and thrust requirements (thrust to lift ratio) $0 \leq \frac{T}{L} \leq 0.3$. The flag `flags.speedLo` indicates that the data point is below the low speed limit of the model ($U<2w_\mathrm{i,h}$; airspeed is lower than twice the induced downwash in hover[^2]). Data points with flags may be reasonable extrapolations of the model, but it is safer to assume flagged data points are invalid.
+
+[^2]:see @KleinHeerenbrink2015 p. 13.
 
 ### Non-flapping drag components
 Stored in the `table` are also the drag components. Only the non-flapping (`Dnf`) components are stored:
@@ -106,14 +110,16 @@ mtext(side = 1, line = 2,'Airspeed (m/s)')
 mtext(side = 2, line = 2,'Drag (N)')
 ```
 
-The above figure shows the magnitude of the non-flapping drag components for different speeds. The lift dependent components are very large at low speeds and they decrease rapidly with increasing speed. The parasitic drag shows the classic quadratic behaviour with speed. The zero-lift profile drag is near zero at low speeds, and increases more linearly with speed. This is due to the strong dependence of the friction coefficient on the Reynolds number.
+The above figure shows the magnitude of the non-flapping drag components for different speeds. The lift dependent components are very large at low speeds and they decrease rapidly with increasing speed. The parasitic drag shows the classic quadratic behaviour with speed. The zero-lift profile drag is near zero at low speeds, and increases more linearly with speed. This is due to the strong dependence of the friction coefficient on the Reynolds number. As non-flapping effectively means gliding, these drag components can be used to construct a drag polar for gliding flight. However, this ignores the wing flex that typically occurs at higher speeds.
 
 ### Drag factors and power factors
-Flapping the wings alters the drag experienced by the wings: $D = k_D D^\prime$ (using $D^\prime$ for non-flapping drag). The factors $k_D$ depend on the wingbeat kinematics and are returned in `table`:
+Flapping the wings alters the drag experienced by the wings: $D = k_D D^\prime$ (using $D^\prime$ for non-flapping drag) [^3]. The factors $k_D$ depend on the wingbeat kinematics and are returned in `table`:
 ```{r}
 flightperf$table[,grep('^kD.',names(flightperf$table))]
 ```
 These factors are for induced drag, zero lift profile drag and lift dependent profile drag respectively.
+
+[^3]: flapping flight factors as per @KleinHeerenbrink2015.
 
 The aerodynamic power components for flapping flight can be computed in a similar way: $P = k_P D^\prime U$.
 The factors $k_P$ depend on the wingbeat kinematics and are also stored in `table`:
