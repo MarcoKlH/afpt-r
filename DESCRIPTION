@@ -1,7 +1,7 @@
 Package: afpt
 Title: Animal Flight Performance Tool
-Version: 0.3.1
-Date: 2017-02-24
+Version: 0.3.3
+Date: 2017-08-3
 Authors@R: person("Marco",
                 "Klein Heerenbrink",
                 email = "Marco.KleinHeerenbrink@zoo.ox.ac.uk",
