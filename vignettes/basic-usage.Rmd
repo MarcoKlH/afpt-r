@@ -153,30 +153,29 @@ These are respectively the wingbeat frequency (in this case as specified in `myB
 
 
 ## Flight condition
-All models by default use the internal `FLIGHTCONDITION`, which describes the standard atmosphere, with air density $\rho=1.225$ kg m^3^, gravitational acceleration $g=9.81$ m s^-2^ and kinematic viscosity $\nu=15\times 10^{-6}$ m^2^ s^-1^. It is possible to define an alternative flight condition:
+All models by default use the internal `FLIGHTCONDITION`, which describes the standard atmosphere, with air density $\rho=1.225$ kg m^3^, gravitational acceleration $g=9.81$ m s^-2^ and kinematic viscosity $\nu=14.61\times 10^{-6}$ m^2^ s^-1^. It is possible to define an alternative flight condition:
 ```{r}
 myFlightCondition <- list(
-  density = 0.9, # [kg/m3] about 3 km altitude
+  density = 0.9093, # [kg/m3] 3 km altitude
   gravity = 9.81, # [m/s2]
-  viscosity = 15E-6, # [m2/s]
+  viscosity = 18.63E-6, # [m2/s] 3 km altitude
   windSpeed = 0,# [m/s]
   windDir = 0 # [degrees] 0 degrees means wind is along the track direction
 )
 ```
-Air density decreases with altitude, and a density of $\rho=0.900$ kg m^3^ corresponds to a flight altitude of about 3 km above sea level in the international standard atmosphere. This alternative flight condition can be used in the performance calculation as:
+Air density decreases with altitude, and a density of $\rho=0.909$ kg m^3^ corresponds to a flight altitude of 3 km above sea level in the international standard atmosphere. At this altitude the kinematic viscosity has increased to $\nu=18.63\times 10^{-6}$ m^2^ s^-1^. This alternative flight condition can be used in the performance calculation as:
 ```{r}
 flightperf.ISA3 <- computeFlightPerformance(myBird,flightcondition=myFlightCondition)
 flightperf.ISA3
 ```
-Note how the power requirements have slightly increased (this is only apparent from the `minimumPower` and `maximumRange`, as the maximum available power is unchanged). The characteristic speeds also increased. The cost of transport at the maximum range speed has reduced:
+Note how the power requirements have increased (this is only apparent from the `minimumPower` and `maximumRange`, as the maximum available power is unchanged), but the characteristic speeds also increased. Looking at the energetic cost per traveled distance:
 ```{r}
-COT.ISA0 <- with(flightperf$table,power.chem/speed)[3]; 
-COT.ISA3 <-with(flightperf.ISA3$table,power.chem/speed)[3]; 
+COT.ISA0 <- with(flightperf$table,power.chem/speed); 
+COT.ISA3 <-with(flightperf.ISA3$table,power.chem/speed); 
 list(ISA0 = COT.ISA0, ISA3 = COT.ISA3)
+COT.ISA3/COT.ISA0
 ```
-Even though the advantage is marginal in this case, this does show how a bird can fly for a longer distance on a given amount of fuel by flying at higher altitude.
-
-
+it appears that flying at the maximum range speed at a higher altitude will actually reduce the maximum range (which can be attributed to the increase in kinematic viscosity, increasing the profile drag coefficient). However, the 1% increase in flight cost does pay back as a 15% reduction in flight time. In fact, if the bird cares about time minimization, flying at altitude is highly advantageous, increasing the maximum flight speed while reducing the associated cost of transport.
 
 ## References
 
