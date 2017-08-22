@@ -19,6 +19,8 @@ If only a \code{\link{Bird}} object is provided, the function will assume that m
 numeric value of mechanical power
 }
 \references{
+Pennycuick, C. J. & Rezende, M. A. (1984) The specific power output of aerobic muscle, related to the power density of mitochondria. \emph{J. Exp. Biol.}, \bold{108}, {377–392}.
+
 Pennycuick, C. J. (2008). \emph{Modelling the flying bird.} Amsterdam, The Netherlands: Elsevier.
 }
 \author{
@@ -27,7 +29,7 @@ Marco Klein Heerenbrink
 \note{
 Available power is determined as a constant for the muscles. In reality the muscle power output depends on strainrate and stress, which in vertebrates are directly linked to wingbeat kinematics and aerodynamic loads.
 
-The model of \cite{Pennycuick 2008} uses an isometric stress of 560 kN/m2. This is much higher than any measured value. A more reasonable yet still very optimistic value would be 400 kn/m2, which is the default value assigned by the \code{\link{Bird}} constructor.
+Flight 1.25, the model of \cite{Pennycuick (2008)} uses an isometric stress of 560 kN/m2. This is much higher than any measured value (\cite{Pennycuick & Rezende 1984}). A more reasonable yet still very optimistic value would be 400 kn/m2, which is the default value assigned by the \code{\link{Bird}} constructor.
 }
 \seealso{
 \code{\link{Bird}}

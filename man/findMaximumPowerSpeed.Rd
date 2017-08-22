@@ -52,8 +52,8 @@ Vmin <- 5
 Vmax <- 30
 Paero.maxSpeed <- findMaximumPowerSpeed(myBird,Paero.available,Vmin,Vmax)
 print(Paero.maxSpeed[c('speed','power','amplitude','strokeplane','frequency')])
-#        speed    power amplitude strokeplane frequency
-#   1 16.55791 5.233528  50.20133    6.655102  5.948083
+#      speed    power amplitude strokeplane frequency
+# 1 16.58797 5.233459  50.22762    6.812345  5.948083
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.

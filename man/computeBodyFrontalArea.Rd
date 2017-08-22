@@ -19,9 +19,9 @@ Other (\cite{Pennycuick \emph{et al.} 1988}): \eqn{S_b = 0.00813 m^{0.666}}{Sb =
 Numeric value for the body frontal area.
 }
 \references{
-Pennycuick, C. J., Obrecht III, H. H. and Fuller, M. R. 1988 Empirical estimates of body drag of large waterfowl and raptors. \emph{J. Exp. Biol.} \bold{135}, 253--264.
+Pennycuick, C. J., Obrecht III, H. H. and Fuller, M. R. (1988) Empirical estimates of body drag of large waterfowl and raptors. \emph{J. Exp. Biol.} \bold{135}, 253--264.
 
-Hedenström, A. and Rosén, M. 2003. Body frontal area in passerine birds. \emph{J. Avian Biol.} \bold{34}, 159--162.
+Hedenström, A. and Rosén, M. (2003) Body frontal area in passerine birds. \emph{J. Avian Biol.} \bold{34}, 159--162.
 
 }
 \author{

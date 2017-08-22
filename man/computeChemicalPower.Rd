@@ -17,7 +17,7 @@ Computes the chemical power, i.e. the rate at which chemical energy is consumed,
 }
 \details{
 Chemical power is computed as
-\deqn{P_\mathrm{chem} = R(\frac{P_\mathrm{mech}}{\eta} + \mathrm{BMR})}{ P.chem = R * (P.mech/eta + BMR)} as described in \cite{Pennycuick 2008}. Here \eqn{R} is the respiration factor, \eqn{\eta}{eta} is the muscle conversion efficiency and \eqn{\mathrm{BMR}}{BMR} the basal metabolic rate, see \code{\link{Bird}}.
+\deqn{P_\mathrm{chem} = R(\frac{P_\mathrm{mech}}{\eta} + \mathrm{BMR})}{ P.chem = R * (P.mech/eta + BMR)} as described by \cite{Pennycuick (2008)}. Here \eqn{R} is the respiration factor, \eqn{\eta}{eta} is the muscle conversion efficiency and \eqn{\mathrm{BMR}}{BMR} the basal metabolic rate, see \code{\link{Bird}}.
 }
 \value{
 Chemical power of same type as inpute \code{power.chem}.

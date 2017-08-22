@@ -53,34 +53,34 @@ myBird = Bird(
 ## simplest performance calculation
 performance.myBird <- computeFlightPerformance(myBird,strokeplane=0)
 performance.myBird
-#   Name: Jackdaw
-#   Sc. name: Corvus monedula
-#   Bird definitions: NA
-#                 speed power.aero power.chem strokeplane amplitude
-#   minimumSpeed  3.783      5.234      27.29           0      43.5
-#   minimumPower  8.219      2.144      12.51           0      31.7
-#   maximumRange 11.091      2.565      14.52           0      35.2
-#   maximumSpeed 16.556      5.234      27.29           0      49.6
-#   Maximum climb performance:
-#                    speed power.aero power.chem strokeplane amplitude climbRate
-#   maximumClimbRate 9.141      5.234      27.29           0      49.4      1.15
+# Name: Jackdaw
+# Sc. name: Corvus monedula
+# Bird definitions: NA
+#               speed power.aero power.chem strokeplane amplitude
+# minimumSpeed  3.783      5.228      27.26           0      43.5
+# minimumPower  8.227      2.138      12.49           0      31.7
+# maximumRange 11.102      2.558      14.49           0      35.1
+# maximumSpeed 16.587      5.234      27.29           0      49.6
+# Maximum climb performance:
+#                  speed power.aero power.chem strokeplane amplitude climbRate
+# maximumClimbRate  9.15      5.234      27.29           0      49.4     1.153
 
 \dontrun{ # computationally intensive
 ## optimize strokeplane angle and use speed dependent frequency
 funFrequency = function(U){19.8 - 4.7*U + 0.45*U^2 - 0.0138*U^3}
 performance.myBird <- computeFlightPerformance(myBird,strokeplane='opt',frequency=funFrequency)
 performance.myBird
-#   Name: Jackdaw
-#   Sc. name: Corvus monedula
-#   Bird definitions: NA
-#                    speed power.aero power.chem  strokeplane amplitude
-#   minimumSpeed  2.292      5.234      27.29        50.0      43.8
-#   minimumPower  8.182      2.325      13.38        21.6      42.8
-#   maximumRange 11.455      2.783      15.57        14.9      44.3
-#   maximumSpeed 16.067      5.234      27.29         8.4      64.4
-#   Maximum climb performance:
-#                    speed power.aero power.chem strokeplane amplitude climbRate
-#   maximumClimbRate 9.673      5.234      27.29        17.5      61.7     1.011
+# Name: Jackdaw
+# Sc. name: Corvus monedula
+# Bird definitions: NA
+#               speed power.aero power.chem strokeplane amplitude
+# minimumSpeed  2.293      5.229      27.27        49.9      43.8
+# minimumPower  8.192      2.319      13.35        21.6      42.8
+# maximumRange 11.463      2.775      15.53        14.9      44.3
+# maximumSpeed 16.088      5.233      27.29         8.3      64.5
+# Maximum climb performance:
+#                  speed power.aero power.chem strokeplane amplitude climbRate
+# maximumClimbRate 9.688      5.234      27.29        17.5      61.7     1.015
 
 ## plot variation of speed, power and flapping kinematics
 plot(performance.myBird$powercurve[c('speed','power.aero','strokeplane','frequency','amplitude')])

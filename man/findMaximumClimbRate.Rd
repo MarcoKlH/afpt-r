@@ -43,8 +43,8 @@ climbSpeed <- 8 #  airspeed during climb
 ## find maximum climbrate:
 Paero.climb <- findMaximumClimbRate(myBird,Paero.available,climbSpeed)
 print(Paero.climb[c('speed','amplitude','frequency','climbRate')])
-#     speed amplitude frequency climbRate
-#   1     8   54.8201  5.948083  1.159171
+#   speed amplitude frequency climbRate
+# 1     8  54.84965  5.948083  1.162002
 
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the

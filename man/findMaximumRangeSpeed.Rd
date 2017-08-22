@@ -41,8 +41,8 @@ myBird = Bird(
 
 maximumRangeSpeed.chem <- findMaximumRangeSpeed(myBird)
 maximumRangeSpeed.chem[c('speed','power','strokeplane','amplitude','frequency')]
-#        speed    power strokeplane amplitude frequency
-#   1 11.01736 14.36211    18.15247  36.73515  5.948083
+#      speed    power strokeplane amplitude frequency
+# 1 11.02543 14.32754    18.17729  36.69311  5.948083
 
 maximumRangeSpeed.chem.wind <- findMaximumRangeSpeed(
   myBird,
@@ -50,8 +50,8 @@ maximumRangeSpeed.chem.wind <- findMaximumRangeSpeed(
   windDir = 90
 )
 maximumRangeSpeed.chem.wind[c('speed','power','strokeplane','amplitude','frequency')]
-#        speed    power strokeplane amplitude frequency
-#   1 11.81036 15.51402     16.2951  38.21434  5.948083
+#      speed    power strokeplane amplitude frequency
+# 1 11.81974 15.47758    16.33727  38.17508  5.948083
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
