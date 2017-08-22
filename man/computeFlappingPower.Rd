@@ -106,45 +106,45 @@ speedrange <- seq(5,14,length.out=5)
 ## compute aerodynamic power for that speed range:
 Paero <- computeFlappingPower(myBird,speedrange)
 print(Paero[c("speed","power","frequency","strokeplane")])
-#     speed    power frequency strokeplane
-#   1  5.00 2.794243  5.948083    46.52941
-#   2  7.25 2.134543  5.948083    31.83613
-#   3  9.50 2.211030  5.948083    22.47921
-#   4 11.75 2.751401  5.948083    16.42896
-#   5 14.00 3.688789  5.948083    11.98535
+#   speed    power frequency strokeplane
+# 1  5.00 2.789751  5.948083    46.56887
+# 2  7.25 2.129466  5.948083    31.89129
+# 3  9.50 2.203773  5.948083    22.51896
+# 4 11.75 2.740763  5.948083    16.49120
+# 5 14.00 3.673714  5.948083    12.09174
 
 ## prescribe strokeplane angle:
 Paero <- computeFlappingPower(myBird,speedrange,strokeplane=20)
 print(Paero[c("speed","power","frequency","strokeplane")])
-#     speed    power frequency strokeplane
-#   1  5.00 2.954672  5.948083          20
-#   2  7.25 2.146595  5.948083          20
-#   3  9.50 2.211375  5.948083          20
-#   4 11.75 2.751996  5.948083          20
-#   5 14.00 3.691352  5.948083          20
+#   speed    power frequency strokeplane
+# 1  5.00 2.950259  5.948083          20
+# 2  7.25 2.141581  5.948083          20
+# 3  9.50 2.204132  5.948083          20
+# 4 11.75 2.741335  5.948083          20
+# 5 14.00 3.676224  5.948083          20
 
 ## prescribe frequency as a function of speed:
 funFrequency = function(U){19.8 - 4.7*U + 0.45*U^2 - 0.0138*U^3}
 Paero <- computeFlappingPower(myBird,speedrange,frequency=funFrequency,strokeplane='opt')
 print(Paero[c("speed","power","frequency","strokeplane")])
-#     speed    power frequency strokeplane
-#   1  5.00 2.814929  5.825000    46.13168
-#   2  7.25 2.361644  4.119247    25.97741
-#   3  9.50 2.397808  3.930725    17.92572
-#   4 11.75 2.871223  4.316291    14.51660
-#   5 14.00 3.809508  4.332800    11.69210
+#   speed    power frequency strokeplane
+# 1  5.00 2.810431  5.825000    46.16223
+# 2  7.25 2.356278  4.119247    25.99702
+# 3  9.50 2.390251  3.930725    17.94304
+# 4 11.75 2.860463  4.316291    14.52910
+# 5 14.00 3.794431  4.332800    11.70058
 
 ## examine effect of frequency for a single airspeed:
 speedrange <- rep(10,5) #  repeated speed
 freqrange <- seq(3,10,length.out=5) #  frequency range
 Paero <- computeFlappingPower(myBird,speedrange,frequency=freqrange,strokeplane='opt')
 print(Paero[c("speed","power","frequency","strokeplane")])
-#     speed    power frequency strokeplane
-#   1    10 2.689769      3.00    13.88165
-#   2    10 2.375979      4.75    18.87665
-#   3    10 2.271683      6.50    21.44281
-#   4    10 2.227768      8.25    21.56702
-#   5    10 2.209052     10.00    19.97902
+#   speed    power frequency strokeplane
+# 1    10 2.681028      3.00    13.87797
+# 2    10 2.367982      4.75    18.90949
+# 3    10 2.263765      6.50    21.52433
+# 4    10 2.219739      8.25    21.71519
+# 5    10 2.200852     10.00    20.18503
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.

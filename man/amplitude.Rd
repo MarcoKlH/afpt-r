@@ -22,7 +22,7 @@ Klein Heerenbrink, M., Johansson, L. C. and Hedenström, A. 2015 Power of the wi
 }
 \examples{
 ## reduced frequency
-kf <- 2*pi*4/10 # 4 Hz at 10 m/s
+kf <- 2*pi*4/10 # 4 Hz at 10 m/s for 1m wing span
 ## strokeplane angle
 phi <- 20*pi/180 # 20 degrees
 ## thrust ratio

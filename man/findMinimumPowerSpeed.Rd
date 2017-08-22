@@ -28,8 +28,8 @@ myBird = Bird(
 
 minimumPowerSpeed.aero <- findMinimumPowerSpeed(myBird)
 minimumPowerSpeed.aero[c('speed','power','strokeplane','amplitude','frequency')]
-#        speed    power
-#   1 8.023133 2.098655
+#      speed    power strokeplane amplitude frequency
+# 1 8.030022 2.092976    28.14514  34.52719  5.948083
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
