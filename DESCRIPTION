@@ -1,14 +1,24 @@
 Package: afpt
 Title: Animal Flight Performance Tool
-Version: 0.3.3
-Date: 2017-08-3
-Authors@R: person("Marco",
+Version: 0.3.3.9000
+Date: 2017-08-22
+Authors@R: c(
+        person("Marco",
                 "Klein Heerenbrink",
                 email = "Marco.KleinHeerenbrink@zoo.ox.ac.uk",
-                role = c("aut","cre"))
+                role = c("aut","cre")),
+        person("Anders",
+                "Hedenström",
+                role = c("aut","fnd"))
+        )
 Description: Collection of functions useful for estimating/modelling flight costs
     in animal (vertebrate) flight. It features an implementation of the aerodynamic
     power model described in Klein Heerenbrink et al. 2015 Proc.R.Soc.A 471: 20140952.
+    The package takes inspiration from the Flight program developed by Colin 
+    Pennycuick (Pennycuick 2008 Modelling the flying bird. Amsterdam, The Netherlands:
+    Elsevier.). The afpt package allows the user to estimate animal flight 
+    performance based on basic morphological measurements such as body mass, wingspan
+    and wing area. 
 Depends: R(>= 3.0.0)
 Imports: graphics,
     stats
