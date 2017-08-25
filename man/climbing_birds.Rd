@@ -25,14 +25,8 @@ Data extracted from \cite{Hedenström & Alerstam 1992}.
     \item{\code{climbAlitude}}{a numeric vector}
   }
 }
-\details{
-%%  ~~ If necessary, more details than the __description__ above ~~
-}
 \source{
 Hedenström A., Alerstam, T. (1992) Climbing performance of migrating birds as a basis for estimating limits for fuel-carrying capacity and muscle work. \emph{J. Exp. Biol} \bold{164} 19-38 \url{http://jeb.biologists.org/content/164/1/19}
-}
-\references{
-%%  ~~ possibly secondary sources and usages ~~
 }
 \examples{
 data(climbing_birds)
