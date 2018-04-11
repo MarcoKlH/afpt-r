@@ -61,6 +61,7 @@ computeFlappingPower <- function(bird,speed,...,frequency = bird$wingbeatFrequen
     power.pro0 <- kP$pro0*Dnf$pro0*speed
     power.pro2 <- kP$pro2*Dnf$pro2*speed
     power.par <- Dnf$par*speed
+    power.total <- power.ind + power.pro0 + power.pro2 + power.par
 
     # induced velocity in hover (for forward flight check)
     vih <- sqrt(L/(1/2*rho*pi*b^2))
@@ -76,7 +77,8 @@ computeFlappingPower <- function(bird,speed,...,frequency = bird$wingbeatFrequen
     output <- data.frame(
         bird.name = bird$name,
         speed = speed,
-        power = power.ind + power.pro0 + power.pro2 + power.par,
+        power = power.total,
+        power.chem = mech2chem(power.total,bird),
         strokeplane = strokeplane,
         amplitude = amplitude(kf,phi,ToverL),
         frequency = frequency,
@@ -88,7 +90,6 @@ computeFlappingPower <- function(bird,speed,...,frequency = bird$wingbeatFrequen
         Dnf = Dnf,
         L = L
     )
-    class(output) <- append(class(output),'power.mechanical')
 
     return(output)
 }

@@ -8,7 +8,7 @@ findMaximumRangeSpeed <- function(bird,lower=NULL,upper=NULL,windSpeed=0,windDir
 
 .findMaximumRangeSpeed.bird <- function(bird,lower,upper,windSpeed=0,windDir=0,...){
   fun <- function(speed){
-    computeChemicalPower( computeFlappingPower(bird,speed,...), bird )
+    computeFlappingPower(bird,speed,...)
   }
   return(.findMaximumRangeSpeed.function(fun,lower,upper,windSpeed,windDir,...))
 }
@@ -34,10 +34,9 @@ findMaximumRangeSpeed <- function(bird,lower=NULL,upper=NULL,windSpeed=0,windDir
   }
 
   costOfTransport <- function(speed) {
-    COT <- fun(speed)$power/groundSpeed(speed)
+    COT <- fun(speed)$power.chem/groundSpeed(speed)
   }
 
-  #optResult <- pracma::fminbnd(costOfTransport,lower,upper)
   optResult <- stats::optimize(costOfTransport,c(lower,upper),tol=0.01)
   optResult$xmin <- optResult$minimum
 

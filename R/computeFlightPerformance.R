@@ -32,51 +32,37 @@ computeFlightPerformance <- function (bird,...,length.out=10) {
   Vmr <- (c1/c2)^(1/4)
 
   # estimate available power
-  powerAvailable.aero <- computeAvailablePower(bird)
-
-  # speed dependent function for aerodynamic power
-  fun_poweraero <- function(speed)computeFlappingPower(bird,speed,...)
-  # speed dependent function for chemical power
-  fun_powerchem <- function(speed)computeChemicalPower(fun_poweraero(speed),bird)
+  powerAvailable <- computeAvailablePower(bird)
 
   # find characteristic speeds
-  minimumPowerSpeed.aero <- findMinimumPowerSpeed(fun_poweraero, 0.5*Vmp,Vmr )
-  maximumRangeSpeed.chem <- findMaximumRangeSpeed(fun_powerchem, Vmp,2*Vmr,...)
-  maximumRangeSpeed.aero <- fun_poweraero(maximumRangeSpeed.chem$speed)
-  Vmp <- minimumPowerSpeed.aero$speed #  (improved estimate for other searches)
-  minimumMaxPowerSpeed.aero <- findMaximumPowerSpeed(fun_poweraero,powerAvailable.aero, 0.1*Vmp,Vmp )
-  maximumMaxPowerSpeed.aero <- findMaximumPowerSpeed(fun_poweraero,powerAvailable.aero, Vmp,10*Vmr )
+  minimumPowerSpeed <- findMinimumPowerSpeed(bird, 0.5*Vmp,Vmr )
+  maximumRangeSpeed <- findMaximumRangeSpeed(bird, Vmp,2*Vmr,...)
+  Vmp <- minimumPowerSpeed$speed #  (improved estimate for other searches)
+  minimumMaxPowerSpeed <- findMaximumPowerSpeed(bird,powerAvailable, 0.1*Vmp,Vmp )
+  maximumMaxPowerSpeed <- findMaximumPowerSpeed(bird,powerAvailable, Vmp,10*Vmr )
 
-  fun_poweraero_climb <- function(climbAngle,speed)computeFlappingPower(bird,speed,...,climbAngle=climbAngle)
-  maximumClimbRate.aero <- findMaximumClimbRate(fun_poweraero_climb,powerAvailable.aero)
+  maximumClimbRate <- findMaximumClimbRate(bird,powerAvailable)
 
 
 
   # collect data in a table
   powerList <- list(
-    minimumSpeed = minimumMaxPowerSpeed.aero,
-    minimumPower = minimumPowerSpeed.aero,
-    maximumRange = maximumRangeSpeed.aero,
-    maximumSpeed = maximumMaxPowerSpeed.aero
+    minimumSpeed = minimumMaxPowerSpeed,
+    minimumPower = minimumPowerSpeed,
+    maximumRange = maximumRangeSpeed,
+    maximumSpeed = maximumMaxPowerSpeed
   )
   powerTable <- powercurve2table(powerList)
   names(powerTable)[3] <- 'power.aero'
-  powerTable$power.chem <- computeChemicalPower(powerTable$power.aero,bird)
-  # powerTable <- powerTable[c(
-  #   'speed','power.aero','power.chem','strokeplane','amplitude',
-  #   'flags.redFreqLo','flags.redFreqHi','flags.thrustHi','flags.speedLo'
-  # )]
 
-  climbTable <- powercurve2table(list(maximumClimbRate = maximumClimbRate.aero))
+  climbTable <- powercurve2table(list(maximumClimbRate = maximumClimbRate))
   names(climbTable)[3] <- 'power.aero'
-  climbTable$power.chem <- computeChemicalPower(climbTable$power.aero,bird)
 
   # construct speed-power curves (consider replacing with 3rd,4th, or 5th order function of speed...)
   if (length.out>2) {
-    rngCurve <- .setDefault(opts,'rangePowercurve',c(minimumMaxPowerSpeed.aero$speed,maximumMaxPowerSpeed.aero$speed))
-    powercurve <- fun_poweraero(seq(rngCurve[1],rngCurve[2],length.out=length.out))
+    rngCurve <- .setDefault(opts,'rangePowercurve',c(minimumMaxPowerSpeed$speed,maximumMaxPowerSpeed$speed))
+    powercurve <- computeFlappingPower(bird,seq(rngCurve[1],rngCurve[2],length.out=length.out))
     names(powercurve)[3] <- 'power.aero'
-    powercurve$power.chem <- computeChemicalPower(powercurve,bird)$power
   } else powercurve = NULL
 
   # collect list for output
