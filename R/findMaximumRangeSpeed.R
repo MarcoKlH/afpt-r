@@ -53,14 +53,15 @@ findMaximumRangeSpeed <- function(bird,lower=NULL,upper=NULL,windSpeed=0,windDir
 
 
 .findMaximumRangeSpeed.multiBird <- function(bird,lower,upper,windSpeed=0,windDir=0,...){
-  # allow for missing lower and upper definition
+  # allow for missing lower and upper
+    opts <- list(...)
+    fc <- .setDefault(opts,'flightcondition',ISA0)
   if (is.null(lower)) {
-    Vmr <- with(bird,
-                ((massTotal*9.81)^2/(0.5*1.225*pi*wingSpan^2))/
-                  (0.5*1.225*coef.bodyDragCoefficient*bodyFrontalArea)
-    )^(1/4)
+      simpleSpeeds <- .simplifiedPerformance(bird,fc);
+      Vmp = simpleSpeeds$Vmp
+      Vmr = simpleSpeeds$Vmr
 
-    lower <- 0.7*Vmr
+    lower <- Vmp
     upper <- 1.5*Vmr
   }
 
