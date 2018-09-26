@@ -60,7 +60,7 @@ Bird.default <- function(massTotal,wingSpan,wingArea=NULL,...) {
   bird$coef.isometricStress <- .setDefault(opts,'coef.isometricStress',400E3)# adjusted to maximum given by Weis-Fogh and Alexander 1977 (250 - 400)
 
   # basal metabolic rate
-  bird$basalMetabolicRate <- .estimateBasalMetabolicRate(bird)
+  bird$basalMetabolicRate <- .setDefault(opts,'basalMetabolicRate',.estimateBasalMetabolicRate(bird))
 
 
   class(bird) <- append(class(bird),'bird')
