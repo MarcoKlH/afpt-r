@@ -1,4 +1,4 @@
-findMinimumTimeSpeed <- function(bird,EnergyDepositionRate=0,lower=NULL,upper=NULL,windSpeed=0,windDir=0,...){
+findMinimumTimeSpeed <- function(bird,EnergyDepositionRate=1.5*bird$basalMetabolicRate,lower=NULL,upper=NULL,windSpeed=0,windDir=0,...){
     if(any(class(bird)=='function')) return(.findMinimumTimeSpeed.function(bird,EnergyDepositionRate,lower,upper,windSpeed,windDir,...))
     if(any(class(bird)=='bird')) return(.findMinimumTimeSpeed.multiBird(bird,EnergyDepositionRate,lower,upper,windSpeed,windDir,...))
     # otherwise
@@ -6,7 +6,7 @@ findMinimumTimeSpeed <- function(bird,EnergyDepositionRate=0,lower=NULL,upper=NU
     return(try(.findMinimumTimeSpeed.multiBird(Bird(bird),lower,upper,windSpeed,windDir,...),silent=TRUE))
 }
 
-.findMinimumTimeSpeed.bird <- function(bird,EnergyDepositionRate,lower,upper,windSpeed=0,windDir=0,...){
+.findMinimumTimeSpeed.bird <- function(bird,EnergyDepositionRate,lower=NULL,upper=NULL,windSpeed=0,windDir=0,...){
     # allow for missing lower and upper definition
     if (is.null(lower)) {
         Vmr <- with(bird,
@@ -19,10 +19,14 @@ findMinimumTimeSpeed <- function(bird,EnergyDepositionRate=0,lower=NULL,upper=NU
     }
     fun <- function(speed){
         powerOut <- computeFlappingPower(bird,speed,...)
-        powerOut$power.chem = powerOut$power.chem + EnergyDepositionRate
+        powerOut$power.chem <- powerOut$power.chem + EnergyDepositionRate
         return(powerOut)
     }
-    return(.findMaximumRangeSpeed.function(fun,lower,upper,windSpeed,windDir,...))
+    tmp_powerOut <- .findMaximumRangeSpeed.function(fun,lower,upper,windSpeed,windDir,...)
+    powerOut <- computeFlappingPower(bird,tmp_powerOut$speed,...)
+    powerOut$power.dep <- EnergyDepositionRate
+    powerOut$speed.migration <- powerOut$speed*EnergyDepositionRate/(EnergyDepositionRate+powerOut$power.chem)
+    return(powerOut)
 }
 
 .findMinimumTimeSpeed.function <- function(bird,EnergyDepositionRate,lower,upper,windSpeed=0,windDir=0,...){
@@ -30,10 +34,14 @@ findMinimumTimeSpeed <- function(bird,EnergyDepositionRate=0,lower=NULL,upper=NU
 
     fun <- function(speed){
         powerOut <- fun1(speed)
-        powerOut$power.chem = powerOut$power.chem + EnergyDepositionRate
+        powerOut$power.chem <- powerOut$power.chem + EnergyDepositionRate
         return(powerOut)
     }
-    return(.findMaximumRangeSpeed.function(fun,lower,upper,windSpeed,windDir,...))
+    tmp_powerOut <- .findMaximumRangeSpeed.function(fun,lower,upper,windSpeed,windDir,...)
+    powerOut <- fun1(powerOut$speed,...)
+    powerOut$EnergyDepositionRate <- EnergyDepositionRate
+    powerOut$speed.migration <- powerOut$speed*EnergyDepositionRate/(EnergyDepositionRate+powerOut$power.chem)
+    return(powerOut)
 }
 
 

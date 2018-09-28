@@ -61,7 +61,7 @@ This is the simplest call to `computeFlightPerformance()`. The `print()` of the 
 
 These characteristic speeds are stored as a `data.frame` named `table`, which contains several more advanced variables not shown in the `print`, as explained in the following sections.
 
-The function `computeFlightPerformance()` also estimates the best climb performance, i.e. the maximum climb rate that can be achieved given the power available from the muscles. This data point is stored in the `data.frame` named `maxClimb`. It contains the same variables as `table`, plus an additional one: `climbRate`.
+The function `computeFlightPerformance()` also estimates the best climb performance, i.e. the maximum climb rate that can be achieved given the power available from the muscles. This data point is stored in the `data.frame` named `maxClimb`. It contains the same variables as `table`, plus an additional one: `climbRate`. Similarly, the function also produces a `data.frame` named `minTime`, which holds the flight performance for time minimizing migratory flight. At this airspeed, which will be slightly higher than the maximum range speed, the bird balances flight time with the time it takes to (re)gain the energy lost during flight.
 
 Finally, `computeFlightPerformance()` also computes a powercurve for a range of speeds. The length of this curve can be specified by providing a `length.out` argument, but the default produces 10 points. This curve can be used to visualize the speed dependency of the various variables.
 

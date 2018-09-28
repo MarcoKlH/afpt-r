@@ -20,6 +20,8 @@ print.powercurve.set <- function(x,...) {
   listobj$maxClimb$amplitude <- round(10*listobj$maxClimb$amplitude)/10
   cat(paste('Maximum climb performance:','\n'))
   print(listobj$maxClimb[c('speed','power.aero','power.chem','strokeplane','amplitude','climbRate')],digits=4)
+  cat(paste('Minimized migration time:','\n'))
+  print(listobj$minTime[c('speed','speed.migration','power.aero','power.chem','power.dep','strokeplane','amplitude')],digits=4)
 }
 
 print.bird <- function(x,...) {

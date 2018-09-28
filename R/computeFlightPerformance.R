@@ -16,11 +16,12 @@ computeFlightPerformance <- function (bird,...,length.out=10) {
   powerAvailable <- computeAvailablePower(bird)
 
   # find characteristic speeds
-  minimumPowerSpeed <- findMinimumPowerSpeed(bird, 0.5*Vmp,Vmr )
+  minimumPowerSpeed <- findMinimumPowerSpeed(bird, 0.5*Vmp,Vmr,...)
   maximumRangeSpeed <- findMaximumRangeSpeed(bird, Vmp,2*Vmr,...)
   Vmp <- minimumPowerSpeed$speed #  (improved estimate for other searches)
-  minimumMaxPowerSpeed <- findMaximumPowerSpeed(bird,powerAvailable, 0.1*Vmp,Vmp )
-  maximumMaxPowerSpeed <- findMaximumPowerSpeed(bird,powerAvailable, Vmp,10*Vmr )
+  minimumMaxPowerSpeed <- findMaximumPowerSpeed(bird,powerAvailable, 0.1*Vmp,Vmp,...)
+  maximumMaxPowerSpeed <- findMaximumPowerSpeed(bird,powerAvailable, Vmp,10*Vmr,... )
+  minimumTimeSpeed <- findMinimumTimeSpeed(bird,EnergyDepositionRate = 1.5*bird$basalMetabolicRate, maximumRangeSpeed$speed,maximumMaxPowerSpeed$speed,...)
 
   maximumClimbRate <- findMaximumClimbRate(bird,powerAvailable)
 
@@ -39,6 +40,9 @@ computeFlightPerformance <- function (bird,...,length.out=10) {
   climbTable <- powercurve2table(list(maximumClimbRate = maximumClimbRate))
   names(climbTable)[3] <- 'power.aero'
 
+  migrationTable <- powercurve2table(list(minimumTimeSpeed=minimumTimeSpeed))
+  names(migrationTable)[3] <- 'power.aero'
+
   # construct speed-power curves (consider replacing with 3rd,4th, or 5th order function of speed...)
   if (length.out>2) {
     rngCurve <- .setDefault(opts,'rangePowercurve',c(minimumMaxPowerSpeed$speed,maximumMaxPowerSpeed$speed))
@@ -52,6 +56,7 @@ computeFlightPerformance <- function (bird,...,length.out=10) {
     bird = bird,
     table = powerTable,
     maxClimb = climbTable,
+    minTime = migrationTable,
     powercurve = powercurve
   )
   class(output) <- append(class(output),'powercurve.set')

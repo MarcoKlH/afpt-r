@@ -42,28 +42,31 @@ Marco Klein Heerenbrink
 \examples{
 ## Define a bird:
 myBird = Bird(
-  name = "Jackdaw",
-  name.scientific = "Corvus monedula",
-  massTotal = 0.215, #  (kg) total body mass
-  wingSpan = 0.67, #  (m) maximum wing span
-  wingArea = 0.0652, #  (m2) maximum wing area
-  type = "passerine"
+    name = "Jackdaw",
+    name.scientific = "Corvus monedula",
+    massTotal = 0.215, #  (kg) total body mass
+    wingSpan = 0.67, #  (m) maximum wing span
+    wingArea = 0.0652, #  (m2) maximum wing area
+    type = "passerine"
 )
 
 ## simplest performance calculation
-performance.myBird <- computeFlightPerformance(myBird,strokeplane=0)
+performance.myBird <- computeFlightPerformance(myBird)
 performance.myBird
 # Name: Jackdaw
 # Sc. name: Corvus monedula
 # Bird definitions: NA
 #               speed power.aero power.chem strokeplane amplitude
-# minimumSpeed  3.783      5.228      27.26           0      43.5
-# minimumPower  8.227      2.138      12.49           0      31.7
-# maximumRange 11.102      2.558      14.49           0      35.1
-# maximumSpeed 16.587      5.234      27.29           0      49.6
+# minimumSpeed  2.706      5.234      27.29        49.9      51.3
+# minimumPower  8.031      2.093      12.27        28.1      34.5
+# maximumRange 11.025      2.523      14.33        18.2      36.7
+# maximumSpeed 16.590      5.235      27.29         6.8      50.2
 # Maximum climb performance:
 #                  speed power.aero power.chem strokeplane amplitude climbRate
-# maximumClimbRate  9.15      5.234      27.29           0      49.4     1.153
+# maximumClimbRate  8.89      5.234      27.29        24.5      53.9      1.18
+# Minimized migration time:
+#                  speed speed.migration power.aero power.chem power.dep strokeplane amplitude
+# minimumTimeSpeed 11.75           1.962      2.741      15.37     3.081       16.49     38.04
 
 \dontrun{ # computationally intensive
 ## optimize strokeplane angle and use speed dependent frequency
@@ -80,7 +83,10 @@ performance.myBird
 # maximumSpeed 16.088      5.233      27.29         8.3      64.5
 # Maximum climb performance:
 #                  speed power.aero power.chem strokeplane amplitude climbRate
-# maximumClimbRate 9.688      5.234      27.29        17.5      61.7     1.015
+# maximumClimbRate  8.89      5.234      27.29        24.5      53.9      1.18
+# Minimized migration time:
+#                  speed speed.migration power.aero power.chem power.dep strokeplane amplitude
+# minimumTimeSpeed 12.07           1.905      2.964      16.43     3.081       14.13     45.13
 
 ## plot variation of speed, power and flapping kinematics
 plot(performance.myBird$powercurve[c('speed','power.aero','strokeplane','frequency','amplitude')])
