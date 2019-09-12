@@ -9,7 +9,7 @@ output:
     toc: true
     toc_depth: 2
 bibliography: references.bib
-csl: refstyle_authoryear.cls
+csl: refstyle_authoryear.csl
 vignette: >
   %\VignetteIndexEntry{Basic Usage}
   %\VignetteEngine{knitr::rmarkdown}
