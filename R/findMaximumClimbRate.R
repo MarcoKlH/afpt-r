@@ -46,6 +46,7 @@ findMaximumClimbRate <- function(bird,maximumPower,speed='opt',...) {
 }
 
 .findMaximumClimbRate.function <- function(bird,maximumPower,speed,...){
+    verbose = 0
     fun <- match.fun(bird)
     if (grepl('opt',speed)) { # optimize speed (is this a good idea?)
         speed <- findMinimumPowerSpeed(function(speed)fun(0,speed),strokeplane=0,lower=4,upper=20)$speed
@@ -78,13 +79,17 @@ findMaximumClimbRate <- function(bird,maximumPower,speed='opt',...) {
     P.hi <- fun(upper,speed)
 
     if (P.lo$power > maximumPower) {
-        warning("Power required to descend at this speed is higher than the power available.")
+        if (verbose > 0) {
+            warning("Power required to descend at this speed is higher than the power available.")
+        }
         output <- P.lo
         output$climbAngle <- lower
 
     }
     else if (P.hi$power < maximumPower ) {
-        warning("Power required for vertical ascend less than power available (Outside model validity range!)")
+        if (verbose>0) {
+            warning("Power required for vertical ascend less than power available (Outside model validity range!)")
+        }
         output <- P.hi
         output$climbAngle <- upper
     } else {
@@ -107,7 +112,9 @@ findMaximumClimbRate <- function(bird,maximumPower,speed='opt',...) {
         if (output$flags.redFreqHi) {flag.str <- paste(flag.str,'High Reduced Frequency\n')}
         if (output$flags.speedLo) {flag.str <- paste(flag.str,'Low speed\n')}
         if (output$flags.thrustHi) {flag.str <- paste(flag.str,'High Thrust Ratio\n')}
-        warning(sprintf("%i model validity flags raised:%s",flag.ctr,flag.str))
+        if (verbose>0) {
+            warning(sprintf("%i model validity flags raised:%s",flag.ctr,flag.str))
+        }
     }
     return(output)
 }

@@ -9,7 +9,7 @@ output:
     toc: true
     toc_depth: 2
 bibliography: references.bib
-cls: refstyle_authoryear.cls
+cls: refstyle_authoryear.csl
 vignette: >
   %\VignetteIndexEntry{Multiple Birds}
   %\VignetteEngine{knitr::rmarkdown}
@@ -37,7 +37,7 @@ myBirds[c('name','massTotal','wingSpan','wingArea','wingbeatFrequency')]
 ```
 
 As this data set was used in relation to climb performance, we will use the function `findMaximumClimbRate()`: 
-```{r}
+```{r, warning = FALSE}
 myBirds$powerAvailable <- computeAvailablePower(myBirds)
 climbperf <- findMaximumClimbRate(myBirds,maximumPower = myBirds$powerAvailable,strokeplane=20)
 climbperf[c('speed','climbRate','frequency','amplitude')]
