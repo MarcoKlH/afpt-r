@@ -4,6 +4,8 @@
 \alias{computeChemicalPower.numeric}
 \title{Convert mechanical power to chemical power}
 \description{
+Redundant after chemical power is now computed in all functions by default.
+
 Computes the chemical power, i.e. the rate at which chemical energy is consumed, during flight. It takes into account the basal metabolic rate, and the energy needed by the flight muscles to provide the mechanical power required for flight.
 }
 \usage{

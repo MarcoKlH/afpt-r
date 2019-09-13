@@ -16,9 +16,10 @@ findMaximumPowerSpeed(bird, maximumPower, lower, upper, ...)
 Prepares arguments for a call to \code{\link{uniroot}}. The function searches for an airspeed between \code{lower} and \code{upper} that matches the specified maximum power available.
 }
 \value{
-Data frame of class \code{power.mechanical}
+Data frame
 \item{speed}{airspeed for which power matches maximum power}
 \item{power}{aerodynamic (mechanical) power matching maximum power}
+\item{power.chem}{aerodynamic (mechanical) power matching maximum power}
 \item{strokeplane}{ optimized or prescribed strokeplane angle in degrees (from vertical)}
 \item{amplitude}{ optimized peak amplitude in degrees (see \code{\link{amplitude}})}
 \item{\dots}{see \code{\link{computeFlappingPower}} for other variables}

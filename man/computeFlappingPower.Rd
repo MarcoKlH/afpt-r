@@ -53,9 +53,10 @@ computeFlappingPower(bird,speed,...,frequency,strokeplane)
   }% end subsection
 }% end arguments
 \value{
-  An object of class \code{powercurve.mechanical}, basically a data.frame including elements
+  A data.frame including elements
   \item{speed}{ specified speed for which power is computed. }
   \item{power}{ total aerodynamic power. }
+  \item{power.chem}{ total chemical power. }
   \item{strokeplane}{ used strokeplane angle (either specified or optimized). }
   \item{amplitude}{ wingbeat amplitude (implicitly optimized for minimum induced power). }
   \item{frequency}{ wingbeat frequency (specified). }
