@@ -132,6 +132,7 @@ computeFlappingPower <- function(bird,speed,...,frequency = bird$wingbeatFrequen
     frequency <- switch(typeof(frequency),
                         'double'=frequency, # if a numerical value provided, just take that.
                         'closure'=try(frequency(speed),silent=TRUE), # if function provided, try if it works (otherwise deal with error later)
+                        'character'=.recomputeFrequency(bird,opts), # recalculate wingbeat frequency
                         bird$wingbeatFrequency # otherwise just fall back on bird reference frequency
     )
     if (class(frequency)[1]=='try-error') { # deal with try-error in case provided function doesn't work -> fall back on bird reference frequency
@@ -166,4 +167,15 @@ computeFlappingPower <- function(bird,speed,...,frequency = bird$wingbeatFrequen
         'strokeplane' = strokeplane,
         'climbAngle' = climbAngle
     )
+}
+
+.recomputeFrequency <- function(bird,opts){
+    # Pennycuick (1996) The Journal of Experimental Biology 199, 1613–1618
+    fc <- .setDefault(opts,'flightcondition',ISA0)
+    rho <- .setDefault(opts,'density',fc$density)
+    g <- .setDefault(opts,'gravity',fc$gravity)
+
+    sigma <- rho/ISA0$density
+    frequency <- with(bird,wingbeatFrequency * sqrt(massTotal/massEmpty) * sigma^(-3/8))
+    return(frequency)
 }

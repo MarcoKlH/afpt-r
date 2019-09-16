@@ -13,7 +13,7 @@ computeFlappingPower(bird,speed,...,frequency,strokeplane)
   \item{bird}{ object describing the relevant morphological parameters of the bird (or bat); this object should be created using the \code{\link{Bird}} constructor.}
   \item{speed}{ a numeric vector of the airspeed. }
   \item{\dots}{ optional arguments (see details) }
-  \item{frequency}{ wingbeat frequency as single numeric value, a numeric vector matching the speed vector, or a closure object describing the wingbeat frequency as a function of speed. If not provided, the function will look for a default wingbeat frequency in the bird object. }
+  \item{frequency}{ wingbeat frequency as single numeric value, a numeric vector matching the speed vector, a closure object returning a numeric value as a function of speed, or the character string 'recompute'. The latter will recompute the default frequency for the current flight condition (density) and the current total mass of the bird (assuming the frequency in bird is the default wingbeat frequency). If not provided, the function will look for a default wingbeat frequency in the bird object. }
   \item{strokeplane}{ angle of the strokeplane in degrees, as a single numeric value, a numeric vector matching the speed vector, a closure object describing the strokeplane angle as a function of speed. Alternatively providing character string "opt" will tell the function to optimize the strokeplane angle for minimum aerodynamic power. }
   }
   \details{
