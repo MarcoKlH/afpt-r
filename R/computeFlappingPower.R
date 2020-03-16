@@ -88,7 +88,8 @@ computeFlappingPower <- function(bird,speed,...,frequency = bird$wingbeatFrequen
         CDpro0 = Dnf$pro0/(1/2*fc$density*speed^2*S),
         ReynoldsNumber = ReynoldsNo,
         Dnf = Dnf,
-        L = L
+        L = L,
+        stringsAsFactors = FALSE
     )
 
     return(output)
