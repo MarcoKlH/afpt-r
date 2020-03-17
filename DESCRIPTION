@@ -1,7 +1,7 @@
 Package: afpt
 Title: Tools for Modelling of Animal Flight Performance
-Version: 1.0.0.2
-Date: 2018-09-28
+Version: 1.1.0.0
+Date: 2020-03-16
 Encoding: UTF-8
 Authors@R: c(
         person("Marco",

@@ -53,7 +53,3 @@ maximumRangeSpeed.chem.wind[c('speed','power','strokeplane','amplitude','frequen
 #      speed    power strokeplane amplitude frequency
 # 1 11.81974 15.47758    16.33727  38.17508  5.948083
 }
-% Add one or more standard keywords, see file 'KEYWORDS' in the
-% R documentation directory.
-\keyword{ ~kwd1 }
-\keyword{ ~kwd2 }% __ONLY ONE__ keyword per line

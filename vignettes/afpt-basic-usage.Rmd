@@ -44,6 +44,8 @@ myBird$wingbeatFrequency <- 5
 ```
 However, it should be noted that some of the variables are related to others (e.g. `massTotal` is the sum of `massEmpty`, `massFat` and `massLoad`), so that manual changes can lead to unexpected results.
 
+The default bird settings mostly follow the suggestions in @Pennycuick2008.
+
 ## Compute flight performance
 Flight performance can be computed using `computeFlightPerformance()`. It calculates maximum available mechanical power from the muscles, aerodynamic (mechanical) power for flapping flight as a function of airspeed and the corresponding chemical power.
 ```{r}
@@ -170,12 +172,14 @@ flightperf.ISA3
 ```
 Note how the power requirements have increased (this is only apparent from the `minimumPower` and `maximumRange`, as the maximum available power is unchanged), but the characteristic speeds also increased. Looking at the energetic cost per traveled distance:
 ```{r}
-COT.ISA0 <- with(flightperf$table,power.chem/speed); 
-COT.ISA3 <-with(flightperf.ISA3$table,power.chem/speed); 
+COT.ISA0 <- with(flightperf$table,power.chem/speed)
+COT.ISA3 <-with(flightperf.ISA3$table,power.chem/speed)
 list(ISA0 = COT.ISA0, ISA3 = COT.ISA3)
 COT.ISA3/COT.ISA0
 ```
-it appears that flying at the maximum range speed at a higher altitude will actually reduce the maximum range (which can be attributed to the increase in kinematic viscosity, increasing the profile drag coefficient). However, the 1% increase in flight cost does pay back as a 15% reduction in flight time. In fact, if the bird cares about time minimization, flying at altitude is highly advantageous, increasing the maximum flight speed while reducing the associated cost of transport.
+it appears that flying at the maximum range speed at a higher altitude will actually reduce the maximum range (which can be attributed to the increase in kinematic viscosity, increasing the profile drag coefficient). However, the 1% increase in flight cost does pay back as a 15% reduction in flight time. In fact, if the bird cares about time minimization, flying at altitude is highly advantageous, increasing the maximum flight speed while reducing the associated cost of transport. 
+
+
 
 ## References
 

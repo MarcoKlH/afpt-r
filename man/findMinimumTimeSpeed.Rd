@@ -6,7 +6,10 @@
 This function performs a numerical optimization to find the airspeed for which \eqn{\frac{P+P_\mathrm{dep}}{U}}{(P+Pdep)/U} is minimum..
 }
 \usage{
-findMinimumTimeSpeed(bird,EnergyDepositionRate=1.5*bird$basalMetabolicRate,lower=NULL,upper=NULL,windSpeed=0,windDir=0,...)
+findMinimumTimeSpeed(bird,
+  EnergyDepositionRate=1.5*bird$basalMetabolicRate,
+  lower=NULL,upper=NULL,
+  windSpeed=0,windDir=0,...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -45,7 +48,9 @@ myBird = Bird(
 )
 
 minimumTimeSpeed <- findMinimumTimeSpeed(myBird,1.5*myBird$basalMetabolicRate)
-minimumTimeSpeed[c('speed','speed.migration','power','power.chem','power.dep','strokeplane','amplitude','frequency')]
+minimumTimeSpeed[c('speed','speed.migration',
+    'power','power.chem','power.dep',
+    'strokeplane','amplitude','frequency')]
 #     speed speed.migration   power power.chem power.dep strokeplane amplitude frequency
 #  11.74944        1.962213 2.74058   15.36634  3.080752    16.49244  38.03366  5.948083
 
