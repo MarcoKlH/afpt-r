@@ -20,7 +20,7 @@ fP.pro2(kf, phi)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{}{Using \eqn{f} for wingbeat frequency, \eqn{b} for wingspan, and \eqn{U} for air speed:}
+  {Using \eqn{f} for wingbeat frequency, \eqn{b} for wingspan, and \eqn{U} for air speed:}
   \item{kf}{reduced frequency (\eqn{k_f = \frac{2 \pi f b}{U}}{kf = 2 * \pi * f *b / U}); valid range between 1 and 6}
   \item{phi}{strokeplane angle in radians; valid range between 0 and 0.87 rad (50 deg)}
 }
