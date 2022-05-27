@@ -1,7 +1,7 @@
 Package: afpt
 Title: Tools for Modelling of Animal Flight Performance
-Version: 1.1.0.1
-Date: 2020-03-18
+Version: 1.1.0.2
+Date: 2022-05-23
 Encoding: UTF-8
 Authors@R: c(
         person("Marco",
@@ -24,7 +24,7 @@ Description: Allows estimation and modelling of flight costs in animal (vertebra
     flight behaviour and wingbeat kinematics to varying flight conditions.
 URL: https://github.com/MarcoKlH/afpt-r/
 BugReports: https://github.com/MarcoKlH/afpt-r/issues
-Depends: R(>= 3.0.0)
+Depends: R(>= 4.0.0)
 Imports: graphics,
     stats
 Suggests: knitr,
