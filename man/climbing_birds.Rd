@@ -26,7 +26,7 @@ Data extracted from \cite{Hedenström & Alerstam 1992}.
   }
 }
 \source{
-Hedenström A., Alerstam, T. (1992) Climbing performance of migrating birds as a basis for estimating limits for fuel-carrying capacity and muscle work. \emph{J. Exp. Biol} \bold{164} 19-38 \url{http://jeb.biologists.org/content/164/1/19}
+Hedenström A., Alerstam, T. (1992) Climbing performance of migrating birds as a basis for estimating limits for fuel-carrying capacity and muscle work. \emph{J. Exp. Biol} \bold{164} 19-38 \doi{10.1242/jeb.164.1.19}
 }
 \examples{
 data(climbing_birds)
