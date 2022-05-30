@@ -11,7 +11,7 @@ Bird.data.frame <- function(massTotal,wingSpan,wingArea,...) {
 
 Bird.default <- function(massTotal,wingSpan,wingArea=NULL,...) {
   opts <- list(...)
-  if (length(opts)>0) if (class(opts[[1]])=='data.frame') opts <- opts[[1]];
+  if (length(opts)>0) if (inherits(opts[[1]],"data.frame")) opts <- opts[[1]];
   bird <- data.frame(
     wingSpan = wingSpan
   )
