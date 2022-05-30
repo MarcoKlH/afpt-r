@@ -7,13 +7,13 @@ Authors@R: c(
         person("Marco",
                 "KleinHeerenbrink",
                 email = "Marco.KleinHeerenbrink@zoo.ox.ac.uk",
-                role = c("aut","cre")),
+                role = c("aut","cre"),
+                comment = c(ORCID = "0000-0001-8172-8121")),
         person("Anders",
                 "Hedenström",
-                role = c("fnd"))
+                role = c("fnd"),
+                comment = c(ORCID = "0000-0002-1757-0945"))
         )
-Author: Marco KleinHeerenbrink [aut, cre],
-    Anders Hedenström [fnd]
 Description: Allows estimation and modelling of flight costs in animal (vertebrate) flight,
     implementing the aerodynamic power model described in Klein Heerenbrink et al.
     (2015) <doi:10.1098/rspa.2014.0952>. Taking inspiration from the program
