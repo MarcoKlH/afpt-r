@@ -1,12 +1,12 @@
 Package: afpt
 Title: Tools for Modelling of Animal Flight Performance
-Version: 1.1.0.2
-Date: 2022-05-23
+Version: 1.1.0.3
+Date: 2023-03-10
 Encoding: UTF-8
 Authors@R: c(
         person("Marco",
                 "KleinHeerenbrink",
-                email = "Marco.KleinHeerenbrink@zoo.ox.ac.uk",
+                email = "Marco.KleinHeerenbrink@biology.ox.ac.uk",
                 role = c("aut","cre"),
                 comment = c(ORCID = "0000-0001-8172-8121")),
         person("Anders",
