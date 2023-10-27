@@ -9,7 +9,7 @@ computeAvailablePower = function(bird,maxPowerAero,...) {
   )
 }
 
-.computeAvailablePower = function(muscleMass, wingbeatFrequency, maxPowerAero, activeStrain = 400E3, isometricStress = 0.26,muscleDensity = 1060, powerDensityMitochondria = 1.2E-6, optStressMaxPower = 0.30) {
+.computeAvailablePower = function(muscleMass, wingbeatFrequency, maxPowerAero, activeStrain = 0.26, isometricStress = 400E3, muscleDensity = 1060, powerDensityMitochondria = 1.2E-6, optStressMaxPower = 0.30) {
   sigma <- optStressMaxPower*isometricStress
   lambda <- activeStrain
   Vmusc <- muscleMass/muscleDensity
