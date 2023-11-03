@@ -40,6 +40,8 @@ Marco Klein Heerenbrink
 \code{\link{Bird}}, \code{\link{computeFlappingPower}}
 }
 \examples{
+\dontrun{ # computationally intensive
+
 ## Define a bird:
 myBird = Bird(
     name = "Jackdaw",
@@ -68,7 +70,6 @@ performance.myBird
 #                  speed speed.migration power.aero power.chem power.dep strokeplane amplitude
 # minimumTimeSpeed 11.75           1.962      2.741      15.37     3.081       16.49     38.04
 
-\dontrun{ # computationally intensive
 ## optimize strokeplane angle and use speed dependent frequency
 funFrequency = function(U){19.8 - 4.7*U + 0.45*U^2 - 0.0138*U^3}
 performance.myBird <- computeFlightPerformance(myBird,strokeplane='opt',frequency=funFrequency)
@@ -90,13 +91,13 @@ performance.myBird
 
 ## plot variation of speed, power and flapping kinematics
 plot(performance.myBird$powercurve[c('speed','power.aero','strokeplane','frequency','amplitude')])
-} # end dontrun
 
 ## plot power factors
 plot(performance.myBird$powercurve[c('speed','power.aero')])
 plot(performance.myBird$powercurve[c('speed','kP.ind')])
 plot(performance.myBird$powercurve[c('speed','kP.pro0')])
 plot(performance.myBird$powercurve[c('speed','kP.pro2')])
+} # end dontrun
 
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
